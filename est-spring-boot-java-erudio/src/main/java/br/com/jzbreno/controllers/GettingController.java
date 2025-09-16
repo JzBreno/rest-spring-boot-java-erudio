@@ -1,7 +1,6 @@
 package br.com.jzbreno.controllers;
 
-import br.com.jzbreno.model.Greeting;
-import org.springframework.stereotype.Controller;
+import br.com.jzbreno.model.record.Greeting;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

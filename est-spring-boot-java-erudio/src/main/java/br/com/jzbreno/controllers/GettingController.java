@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class GettingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
-
+//    QUERY PARAMANS
     //http://localhost:8080/greeting?name=Breno
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue = "world!") String name) {

@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Greeting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/EstSpringBootJavaErudioApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/br/com/jzbreno/EstSpringBootJavaErudioApplicationTests.class" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/ExceptionResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/SumAritmeticException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/handler/CustomEntityResponseHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/MathController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/MathRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +21,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Record" />
+        <option value="Exception" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -35,28 +38,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.EstSpringBootJavaErudioApplication.executor": "Debug",
-    "Spring Boot.Startup.executor": "Debug",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/test",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.EstSpringBootJavaErudioApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.Startup.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/test&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jzbre\OneDrive\Documentos\Desevolvimento\Projetos\rest-spring-boot-java-erudio\est-spring-boot-java-erudio\src\test" />
@@ -88,11 +91,35 @@
       <option name="presentableId" value="Default" />
       <updated>1757272402356</updated>
       <workItem from="1757272403473" duration="1521000" />
-      <workItem from="1757293259619" duration="1832000" />
+      <workItem from="1757293259619" duration="2023000" />
+      <workItem from="1757632997147" duration="525000" />
+      <workItem from="1757721711323" duration="4800000" />
+      <workItem from="1757864043573" duration="7028000" />
+      <workItem from="1757981667388" duration="4416000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/handler/CustomEntityResponseHandler.java</url>
+          <line>30</line>
+          <properties class="br.com.jzbreno.Exceptions.handler.CustomEntityResponseHandler" method="handleIlegalAritmeticExceptions">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/ExceptionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/SumAritmeticException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/handler/CustomEntityResponseHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/MathController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/MathRecord.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/MathController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/MathController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/Exceptions/handler/CustomEntityResponseHandler.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +91,7 @@
       <workItem from="1757632997147" duration="525000" />
       <workItem from="1757721711323" duration="4800000" />
       <workItem from="1757864043573" duration="7028000" />
-      <workItem from="1757981667388" duration="4416000" />
+      <workItem from="1757981667388" duration="5022000" />
     </task>
     <servers />
   </component>
@@ -109,15 +105,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/GettingController.java</url>
           <line>16</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/Exceptions/handler/CustomEntityResponseHandler.java</url>
-          <line>30</line>
-          <properties class="br.com.jzbreno.Exceptions.handler.CustomEntityResponseHandler" method="handleIlegalAritmeticExceptions">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

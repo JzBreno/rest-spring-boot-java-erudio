@@ -45,6 +45,21 @@ public class MathController {
         return ResponseEntity.ok().body(mathRecord);
     }
 
+    @RequestMapping("/mul/{param1}/{param2}")
+    public ResponseEntity<MathRecord> multiplication(@PathVariable(name = "param1") String param1, @PathVariable("param2") String param2){
 
+        Double firstParam = Double.parseDouble(param1.replace(",","."));
+        Double secondParam = Double.parseDouble(param2.replace(",","."));
+        MathRecord mathRecord = new MathRecord(firstParam * secondParam, "MUL");
+        return ResponseEntity.ok().body(mathRecord);
+    }
+
+    @RequestMapping("/square/{param1}")
+    public ResponseEntity<MathRecord> square(@PathVariable(name = "param1") String param1){
+
+        Double firstParam = Double.parseDouble(param1.replace(",","."));
+        MathRecord mathRecord = new MathRecord(Math.pow(firstParam, 2), "SQUARE");
+        return ResponseEntity.ok().body(mathRecord);
+    }
 
 }

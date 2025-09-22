@@ -1,1 +1,12 @@
 spring.application.name=est-spring-boot-java-erudio
+  # Configurações do Banco de Dados
+spring.datasource.url=jdbc:mysql://localhost:3306/my_first_database?useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=admin1234
+  
+  # Configurações do JPA e Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+  
+  # Opcional: Para ver as queries SQL no console (útil para debug)
+spring.jpa.show-sql=true

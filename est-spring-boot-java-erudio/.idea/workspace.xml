@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +105,7 @@
       <workItem from="1758411483662" duration="4157000" />
       <workItem from="1758468109377" duration="11961000" />
       <workItem from="1758499803975" duration="1457000" />
-      <workItem from="1758591196631" duration="2897000" />
+      <workItem from="1758591196631" duration="3650000" />
     </task>
     <servers />
   </component>

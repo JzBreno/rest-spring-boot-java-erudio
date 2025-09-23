@@ -19,7 +19,7 @@ public class Person implements Serializable {
     private String firstName;
     @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
-    @Column(name = "gender", nullable = false, length = 80)
+    @Column(name = "gender", nullable = false, length = 6)
 //    @Enumerated(EnumType.STRING)
     private String gender;
 

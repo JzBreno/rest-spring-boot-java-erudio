@@ -1,5 +1,6 @@
 package br.com.jzbreno.services;
 
+import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import org.springframework.lang.NonNull;
@@ -17,8 +18,8 @@ import java.util.logging.Logger;
 //alias para o anotation component
 
 public class PersonServices {
-    List<Person> people = new ArrayList<>();
-    private final AtomicLong counter = new AtomicLong();
+
+//    private final AtomicLong counter = new AtomicLong();
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
     private final PersonRepository personRepository;
 
@@ -28,7 +29,7 @@ public class PersonServices {
 
     public Person findById(String id){
         logger.info("Finding person by id");
-        return personRepository.findById(Long.parseLong(id)).isPresent() ? personRepository.findById(Long.parseLong(id)).get() : null;
+        return personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("Person not found for this id :: " + id));
     }
 
     public List<Person> findAll(){
@@ -43,12 +44,12 @@ public class PersonServices {
     }
 
     public Person updating(Person person){
-        people.removeIf(p -> p.getId().equals(person.getId()));
-        people.add(person);
         logger.info("Updating person");
-        Optional<Person> person1  = personRepository.findById(1L);
-        personRepository.delete(person1.get());
-        return person;
+        Person personUpdate = findById(person.getId().toString());
+        personUpdate.setFirstName(person.getFirstName());
+        personUpdate.setLastName(person.getLastName());
+        personUpdate.setGender(person.getGender());
+        return personRepository.save(personUpdate);
     }
 
     public void deleteById(String id){

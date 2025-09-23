@@ -1,6 +1,7 @@
 package br.com.jzbreno.services;
 
 import br.com.jzbreno.model.Person;
+import br.com.jzbreno.repository.PersonRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -19,35 +20,25 @@ public class PersonServices {
     List<Person> people = new ArrayList<>();
     private final AtomicLong counter = new AtomicLong();
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
+    private final PersonRepository personRepository;
+
+    public PersonServices(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     public Person findById(String id){
         logger.info("Finding person by id");
-        Person person = createPerson();
-        people.add(person);
-        return person;
+        return personRepository.findById(Long.parseLong(id)).isPresent() ? personRepository.findById(Long.parseLong(id)).get() : null;
     }
 
     public List<Person> findAll(){
-        logger.info("Finding all persons");
-
-        if(people.isEmpty()){
-            for (int i = 0; i < 10; i++) {
-                people.add(createPerson());
-            }
-        }
-        return people;
-    }
-
-    public Person create(String id){
-        logger.info("Creating person");
-        Person person = createPerson();
-        return person;
+        logger.info("Finding all people");
+        return personRepository.findAll();
     }
 
     public Person create(@NonNull Person person){
-        person.setId(counter.incrementAndGet());
         logger.info("Creating person");
-        people.add(person);
+        personRepository.save(person);
         return person;
     }
 
@@ -55,22 +46,14 @@ public class PersonServices {
         people.removeIf(p -> p.getId().equals(person.getId()));
         people.add(person);
         logger.info("Updating person");
+        Optional<Person> person1  = personRepository.findById(1L);
+        personRepository.delete(person1.get());
         return person;
     }
 
     public void deleteById(String id){
-        Person person = people.get(Integer.parseInt(id));
-        people.remove(person);
-        logger.info("Deleting person by id" + id + " was successful" + person.toString());
-        logger.info("Deleting person by id" + id + " was successful");
+        logger.info("Deleting person");
+        personRepository.deleteById(Long.parseLong(id));
     }
 
-
-
-    private Person createPerson(){
-        logger.info("Creating person");
-        Person person = new Person(counter.incrementAndGet(), "Jose", "Breno", "hender");
-//        people.add(person);
-        return person;
-    }
 }

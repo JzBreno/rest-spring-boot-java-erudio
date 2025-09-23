@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/repository/PersonRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,16 +23,17 @@
         <option value="Exception" />
         <option value="Record" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -41,28 +42,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.EstSpringBootJavaErudioApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;Spring Boot.Startup.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/test&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.EstSpringBootJavaErudioApplication.executor": "Debug",
+    "Spring Boot.Startup.executor": "Debug",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pathVariables",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jzbre\OneDrive\Documentos\Desevolvimento\Projetos\rest-spring-boot-java-erudio\est-spring-boot-java-erudio\src\test" />
@@ -70,6 +72,9 @@
   </component>
   <component name="RunManager">
     <configuration name="Startup" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="DB_PASSWORD" value="admin123" />
+      </envs>
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="est-spring-boot-java-erudio" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="br.com.jzbreno.Startup" />
@@ -102,10 +107,32 @@
       <workItem from="1758245310544" duration="1931000" />
       <workItem from="1758411483662" duration="4157000" />
       <workItem from="1758468109377" duration="11961000" />
+      <workItem from="1758499803975" duration="1457000" />
+      <workItem from="1758591196631" duration="2213000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java</url>
+          <line>38</line>
+          <properties class="br.com.jzbreno.services.PersonServices" method="create">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

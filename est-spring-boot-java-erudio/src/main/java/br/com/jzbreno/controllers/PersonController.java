@@ -23,8 +23,7 @@ public class PersonController{
     }
 
     //adicionado informacoes no request
-    @RequestMapping(value = "/{id}",
-        method = RequestMethod.GET,
+    @GetMapping(value = "/{id}",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Person> findById(@PathVariable(name = "id") String id){
         Person person = personServices.findById(id);
@@ -33,8 +32,7 @@ public class PersonController{
     }
 
     //adicionado informacoes no request
-    @RequestMapping(value = "/findAll",
-        method = RequestMethod.GET,
+    @GetMapping(value = "/findAll",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Person>> findAll(){
         List<Person> people = personServices.findAll();
@@ -42,24 +40,21 @@ public class PersonController{
         return ResponseEntity.ok().body(people);
     }
 
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Person> create(@RequestBody Person person){
         return ResponseEntity.ok().body(personServices.create(person));
     }
 
-    @RequestMapping(
-        method = RequestMethod.PUT,
+    @PutMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Person> update(@RequestBody Person person){
         return ResponseEntity.ok().body(personServices.updating(person));
     }
 
-    @RequestMapping(value = "/{id}",
-        method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(name = "id") String id){
         personServices.deleteById(id);
         return ResponseEntity.noContent().build();

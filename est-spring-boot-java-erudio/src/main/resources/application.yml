@@ -10,6 +10,7 @@ spring:
 
   # Configurações do JPA e Hibernate
   jpa:
+    #comando para criar as tabelas automaticamente das nossas entidades caso nao existam
     hibernate:
       ddl-auto: update
     properties:

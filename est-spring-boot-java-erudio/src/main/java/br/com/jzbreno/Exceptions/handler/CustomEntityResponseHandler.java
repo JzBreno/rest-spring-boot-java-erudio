@@ -2,6 +2,7 @@ package br.com.jzbreno.Exceptions.handler;
 
 import br.com.jzbreno.Exceptions.ExceptionResponse;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +17,7 @@ import java.util.Date;
 @ControllerAdvice
 //Essa anotacao vai ser usada sempre que precisar centralizar um tratamento que seria espalhado em todos os controllers
 //quando um controller lancar uma excesao, caso nao seja fornecido um tratamento mais adequado, ele ira cair nesse tratamento global do controller advice
+@Slf4j
 public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
@@ -23,6 +25,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         ExceptionResponse response = new ExceptionResponse(new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
+        log.warn("Exception: {}", response);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
     };
@@ -32,6 +35,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         ExceptionResponse response = new ExceptionResponse(new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
+        log.error("Exception: {}", response);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
     };
@@ -41,6 +45,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         ExceptionResponse response = new ExceptionResponse(new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
+        log.warn("Exception: {}", response);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
     };

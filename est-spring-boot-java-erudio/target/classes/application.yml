@@ -15,6 +15,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
-    # Opcional: Para ver as queries SQL no console (útil para debug)
     show-sql: true
+
+# Local correto para definir o nível de log
+logging:
+  level:
+    #configurando para toda aplicacao rodar em nivel de WARN
+    root: INFO
+    # Aumenta o nível de log para o seu pacote
+    br.com.jzbreno: DEBUG
+    # Opcional: Para ver logs de baixo nível do Spring
+    # org.springframework: DEBUG

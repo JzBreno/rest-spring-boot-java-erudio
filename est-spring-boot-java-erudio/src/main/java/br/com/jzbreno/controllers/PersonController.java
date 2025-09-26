@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.services.PersonServices;
 import org.springframework.http.MediaType;
@@ -25,8 +26,8 @@ public class PersonController{
     //adicionado informacoes no request
     @GetMapping(value = "/{id}",
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> findById(@PathVariable(name = "id") String id){
-        Person person = personServices.findById(id);
+    public ResponseEntity<PersonDTO> findById(@PathVariable(name = "id") String id){
+        PersonDTO person = personServices.findById(id);
         if(person != null) return ResponseEntity.ok().body(person);
         else return ResponseEntity.notFound().build();
     }
@@ -34,8 +35,8 @@ public class PersonController{
     //adicionado informacoes no request
     @GetMapping(value = "/findAll",
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Person>> findAll(){
-        List<Person> people = personServices.findAll();
+    public ResponseEntity<List<PersonDTO>> findAll(){
+        List<PersonDTO> people = personServices.findAll();
         if (people.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
     }
@@ -43,14 +44,14 @@ public class PersonController{
     @PostMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> create(@RequestBody Person person){
+    public ResponseEntity<PersonDTO> create(@RequestBody PersonDTO person){
         return ResponseEntity.ok().body(personServices.create(person));
     }
 
     @PutMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> update(@RequestBody Person person){
+    public ResponseEntity<PersonDTO> update(@RequestBody PersonDTO person){
         return ResponseEntity.ok().body(personServices.updating(person));
     }
 

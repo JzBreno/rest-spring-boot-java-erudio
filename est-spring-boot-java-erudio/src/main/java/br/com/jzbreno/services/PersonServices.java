@@ -1,11 +1,11 @@
 package br.com.jzbreno.services;
 
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
+import br.com.jzbreno.mapper.ObjectMapper;
+import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -25,30 +25,32 @@ public class PersonServices {
         this.personRepository = personRepository;
     }
 
-    public Person findById(String id){
+    public PersonDTO findById(String id){
         log.info("Finding person by id : " + id);
-        return personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("Person not found for this id :: " + id));
+        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO.class);
     }
 
-    public List<Person> findAll(){
+    public List<PersonDTO> findAll(){
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
-        return personRepository.findAll();
+        return ObjectMapper.parseObjectList(personRepository.findAll(), PersonDTO.class);
     }
 
-    public Person create(@NonNull Person person){
+    public PersonDTO create(@NonNull PersonDTO person){
         log.info("Creating person : " + person.toString());
-        personRepository.save(person);
+        personRepository.save(ObjectMapper.parseObject(person, Person.class));
         return person;
     }
 
-    public Person updating(Person person){
+    public PersonDTO updating(PersonDTO person){
         log.info("Updating person : " + person.toString() );
-        Person personUpdate = findById(person.getId().toString());
+        PersonDTO personUpdate = findById(person.getId().toString());
         personUpdate.setFirstName(person.getFirstName());
         personUpdate.setLastName(person.getLastName());
         personUpdate.setGender(person.getGender());
-        return personRepository.save(personUpdate);
+        Person personVo = ObjectMapper.parseObject(person, Person.class);
+        personRepository.save(personVo);
+        return personUpdate;
     }
 
     public void deleteById(String id){

@@ -2,15 +2,11 @@ package br.com.jzbreno.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "person")
-@Slf4j
 @Data
 public class Person implements Serializable {
 
@@ -23,8 +19,9 @@ public class Person implements Serializable {
     private String firstName;
     @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
+    @Column(name = "address", nullable = false, length = 80)
+    private String address;
     @Column(name = "gender", nullable = false, length = 6)
-//    @Enumerated(EnumType.STRING)
     private String gender;
 
 }

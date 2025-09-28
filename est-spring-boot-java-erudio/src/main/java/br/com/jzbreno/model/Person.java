@@ -2,8 +2,10 @@ package br.com.jzbreno.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "person")
@@ -23,5 +25,8 @@ public class Person implements Serializable {
     private String address;
     @Column(name = "gender", nullable = false, length = 6)
     private String gender;
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
 
 }

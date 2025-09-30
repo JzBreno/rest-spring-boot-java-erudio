@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/mapper/ObjectMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/br/com/jzbreno/unittests/mapper/ObjectMapperTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/br/com/jzbreno/unittests/mapper/mocks/MockPerson.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/mapper/PersonMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/DTO/PersonDTO2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/DTO/PersonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/DTO/PersonDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/controllers/PersonController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/controllers/PersonController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/DTO/PersonDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/DTO/PersonDTO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/Person.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/Person.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/services/PersonServices.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/services/PersonServices.class" afterDir="false" />
     </list>
@@ -48,36 +47,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.ObjectMapperTests.executor": "Run",
-    "JUnit.ObjectMapperTests.parserDTOListToEntityListTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.EstSpringBootJavaErudioApplication.executor": "Debug",
-    "Spring Boot.Startup.executor": "Debug",
-    "git-widget-placeholder": "secao9/padraoDTO",
-    "last_opened_file_path": "C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/main/java/br/com/jzbreno/mapper/mocks",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pathVariables",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.ObjectMapperTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ObjectMapperTests.parserDTOListToEntityListTest.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.EstSpringBootJavaErudioApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.Startup.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;secao9/padraoDTO&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/main/java/br/com/jzbreno/mapper/mocks&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pathVariables&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jzbre\OneDrive\Documentos\Desevolvimento\Projetos\rest-spring-boot-java-erudio\est-spring-boot-java-erudio\src\main\java\br\com\jzbreno\mapper\mocks" />
       <recent name="C:\Users\jzbre\OneDrive\Documentos\Desevolvimento\Projetos\rest-spring-boot-java-erudio\est-spring-boot-java-erudio\src\test\java\br\com\jzbreno\unittests\mapper" />
       <recent name="C:\Users\jzbre\OneDrive\Documentos\Desevolvimento\Projetos\rest-spring-boot-java-erudio\est-spring-boot-java-erudio\src\test" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.jzbreno.model.DTO" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.Startup">
@@ -163,11 +165,28 @@
       <workItem from="1758596400064" duration="271000" />
       <workItem from="1758680061335" duration="9660000" />
       <workItem from="1758772727113" duration="1355000" />
-      <workItem from="1758856227219" duration="280000" />
+      <workItem from="1758856227219" duration="552000" />
+      <workItem from="1759090032239" duration="4913000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.springframework.aop.framework.ProxyFactory" memberName="advisors" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/mapper/PersonMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/DTO/PersonDTO2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/DTO/PersonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/DTO/PersonDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/model/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServices.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/controllers/PersonController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/controllers/PersonController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/DTO/PersonDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/DTO/PersonDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/Person.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/model/Person.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/services/PersonServices.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/services/PersonServices.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonControllerV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonControllerV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServiceV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServiceV2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,15 +165,6 @@
     <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonController.java</url>
-          <line>56</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.springframework.aop.framework.ProxyFactory" memberName="advisors" />

@@ -14,44 +14,38 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-//essa anotacao serve para deixar claro que e uma classe de logica de negocio, e podemos injetala onde precisamos, com  @Autowired ou injecao por construtor(mais recomendado)
-//alias para o anotation component
 @Slf4j
-public class PersonServices {
+public class PersonServiceV2 {
 
-//    private final AtomicLong counter = new AtomicLong();
-//    private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
     private final PersonRepository personRepository;
+    private PersonMapper personMapper = new PersonMapper();
 
-    public PersonServices(PersonRepository personRepository) {
+
+    public PersonServiceV2(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
-    public PersonDTO findById(String id){
+    public PersonDTO2 findByIdV2(String id){
         log.info("Finding person by id : " + id);
-        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO.class);
+        return personMapper.parsePersonDTOV2(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)));
+//        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO2.class);
     }
 
-
-    public List<PersonDTO> findAll(){
+    public List<PersonDTO2> findAllV2(){
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
-        return ObjectMapper.parseObjectList(personRepository.findAll(), PersonDTO.class);
+        return personMapper.parseListPersonDTOV2(personRepository.findAll()) ;
     }
 
-
-
-    public PersonDTO createV1(@NonNull PersonDTO person){
+    public PersonDTO2 createV2(@NonNull PersonDTO2 person){
         log.info("Creating person : " + person.toString());
-        personRepository.save(ObjectMapper.parseObject(person, Person.class));
+        personRepository.save(personMapper.parseDT0V2Person(person));
         return person;
     }
 
-
-
-    public PersonDTO updating(PersonDTO person){
+    public PersonDTO2 updating(PersonDTO person){
         log.info("Updating person : " + person.toString() );
-        PersonDTO personUpdate = findById(person.getId().toString());
+        PersonDTO2 personUpdate = findByIdV2(person.getId().toString());
         personUpdate.setFirstName(person.getFirstName());
         personUpdate.setLastName(person.getLastName());
         personUpdate.setGender(person.getGender());
@@ -64,5 +58,4 @@ public class PersonServices {
         log.info("Deleting person : " + id);
         personRepository.deleteById(Long.parseLong(id));
     }
-
 }

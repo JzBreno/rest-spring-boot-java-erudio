@@ -18,13 +18,11 @@ import java.util.List;
 public class PersonServiceV2 {
 
     private final PersonRepository personRepository;
-    private final PersonServices personServices;
     private PersonMapper personMapper = new PersonMapper();
 
 //dasda
-    public PersonServiceV2(PersonRepository personRepository, PersonServices personServices) {
+    public PersonServiceV2(PersonRepository personRepository) {
         this.personRepository = personRepository;
-        this.personServices = personServices;
     }
 
     public PersonDTO2 findByIdV2(String id){

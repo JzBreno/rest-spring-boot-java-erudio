@@ -47,7 +47,7 @@ public class PersonControllerV2 {
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PersonDTO2> update(@RequestBody PersonDTO person){
+    public ResponseEntity<PersonDTO2> update(@RequestBody PersonDTO2 person){
         return ResponseEntity.ok().body(personServices.updating(person));
     }
 

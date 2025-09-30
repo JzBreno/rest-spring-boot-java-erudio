@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.mapper.PersonMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServices;
@@ -18,9 +19,11 @@ public class PersonController{
 //    assim seria a forma de injecao com anotacao, mas irei usar no construtor como boa pratica
 
     private final PersonServices personServices;
+    private final PersonMapper personMapper;
 
-    public PersonController(PersonServices personServices) {
+    public PersonController(PersonServices personServices, PersonMapper personMapper) {
         this.personServices = personServices;
+        this.personMapper = personMapper;
     }
 
     //adicionado informacoes no request

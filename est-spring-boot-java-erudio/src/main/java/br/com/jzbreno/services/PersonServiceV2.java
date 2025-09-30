@@ -18,11 +18,13 @@ import java.util.List;
 public class PersonServiceV2 {
 
     private final PersonRepository personRepository;
+    private final PersonServices personServices;
     private PersonMapper personMapper = new PersonMapper();
 
 //dasda
-    public PersonServiceV2(PersonRepository personRepository) {
+    public PersonServiceV2(PersonRepository personRepository, PersonServices personServices) {
         this.personRepository = personRepository;
+        this.personServices = personServices;
     }
 
     public PersonDTO2 findByIdV2(String id){
@@ -40,16 +42,20 @@ public class PersonServiceV2 {
     public PersonDTO2 createV2(@NonNull PersonDTO2 person){
         log.info("Creating person : " + person.toString());
         personRepository.save(personMapper.parseDT0V2Person(person));
-        return person;
+        PersonDTO2 returnPersonDto = findAllV2().getLast();
+        log.info("Showing person : " + returnPersonDto.toString());
+        return returnPersonDto;
     }
 
-    public PersonDTO2 updating(PersonDTO person){
+    public PersonDTO2 updating(PersonDTO2 person){
         log.info("Updating person : " + person.toString() );
         PersonDTO2 personUpdate = findByIdV2(person.getId().toString());
         personUpdate.setFirstName(person.getFirstName());
         personUpdate.setLastName(person.getLastName());
         personUpdate.setGender(person.getGender());
-        Person personVo = ObjectMapper.parseObject(person, Person.class);
+        personUpdate.setAddress(person.getAddress());
+        personUpdate.setBirthday(person.getBirthday());
+        Person personVo = personMapper.parseDT0V2Person(personUpdate);
         personRepository.save(personVo);
         return personUpdate;
     }

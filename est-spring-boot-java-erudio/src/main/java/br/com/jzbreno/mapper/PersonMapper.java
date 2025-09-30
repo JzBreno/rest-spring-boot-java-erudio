@@ -38,6 +38,7 @@ public class PersonMapper {
         person.setGender(personDTO2.getGender());
         person.setId(personDTO2.getId());
         person.setAddress(personDTO2.getAddress());
+        person.setBirthday(LocalDate.parse(personDTO2.getBirthday().format(FORMATTER), FORMATTER.withZone(ZoneId.systemDefault())));
 
         // CORREÇÃO: Converte o LocalDate para String e verifica por null
         if (personDTO2.getBirthday() != null) {

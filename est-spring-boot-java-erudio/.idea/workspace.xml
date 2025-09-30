@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861018dd-96fe-4a07-997c-84f6007268b9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonControllerV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/controllers/PersonControllerV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/mapper/PersonMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/mapper/PersonMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServiceV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/jzbreno/services/PersonServiceV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/controllers/PersonControllerV2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/controllers/PersonControllerV2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/mapper/PersonMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/mapper/PersonMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/com/jzbreno/services/PersonServiceV2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/com/jzbreno/services/PersonServiceV2.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +57,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Spring Boot.EstSpringBootJavaErudioApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Spring Boot.Startup.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;secao9/padraoDTO&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;secao11&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/rest-spring-boot-java-erudio/est-spring-boot-java-erudio/src/main/java/br/com/jzbreno/mapper/mocks&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -158,6 +163,8 @@
       <workItem from="1758772727113" duration="1355000" />
       <workItem from="1758856227219" duration="552000" />
       <workItem from="1759090032239" duration="4913000" />
+      <workItem from="1759198131578" duration="29000" />
+      <workItem from="1759199512497" duration="3346000" />
     </task>
     <servers />
   </component>

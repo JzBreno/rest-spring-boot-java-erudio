@@ -2,13 +2,14 @@ package br.com.jzbreno.mapper;
 
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.model.Person;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class PersonMapper {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");

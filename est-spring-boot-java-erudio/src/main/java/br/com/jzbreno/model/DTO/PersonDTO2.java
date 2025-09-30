@@ -2,6 +2,7 @@ package br.com.jzbreno.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.stereotype.Service;
 
 import java.io.Serial;
 import java.io.Serializable;

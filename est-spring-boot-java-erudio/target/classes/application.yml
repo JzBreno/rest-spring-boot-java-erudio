@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: ${DB_PASSWORD}
+    password: admin123
 
   # Configurações do JPA e Hibernate
   jpa:

@@ -1,2 +1,2 @@
 
-GET http://localhost:8080/person/v1/findAll
+GET http://localhost:8080/person/v1/1

@@ -2,7 +2,7 @@ package br.com.jzbreno.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.cglib.core.Local;
+
 
 import java.io.Serializable;
 import java.time.LocalDate;

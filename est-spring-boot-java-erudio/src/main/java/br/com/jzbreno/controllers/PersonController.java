@@ -29,6 +29,15 @@ public class PersonController{
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PersonDTO> findById(@PathVariable(name = "id") String id){
         PersonDTO person = personServices.findById(id);
+        if(id.equals(String.valueOf(1))){
+            person.setEmail("josebrenosousa@gmail.com");
+            person.setPhoneNumber("+55 85985511569");
+        }
+
+        if(id.equals(String.valueOf(3))){
+            person.setEmail("clauid@gmail.com");
+            person.setPhoneNumber("+55 85985597469");
+        }
         if(person != null) return ResponseEntity.ok().body(person);
         else return ResponseEntity.notFound().build();
     }

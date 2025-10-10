@@ -12,7 +12,7 @@ import java.util.Date;
 
 //podemos usar o @JsonPropertyOrder para definir a ordem dos atributos da classe no json
 //@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})
-@JsonFilter("PersonFilter")
+//@JsonFilter("PersonFilter")
 @Data
 public class PersonDTO implements Serializable {
     @Serial

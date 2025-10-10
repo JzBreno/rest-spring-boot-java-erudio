@@ -20,6 +20,7 @@ public class PersonMapper {
         personDtoV2.setFirstName(person.getFirstName());
         personDtoV2.setLastName(person.getLastName());
         personDtoV2.setGender(person.getGender());
+        personDtoV2.setBirthday(person.getBirthday());
         personDtoV2.setId(person.getId());
         personDtoV2.setAddress(person.getAddress());
 
@@ -54,6 +55,7 @@ public class PersonMapper {
             PersonDTO2 personDtoV2 = new PersonDTO2();
             personDtoV2.setFirstName(person.getFirstName());
             personDtoV2.setLastName(person.getLastName());
+            personDtoV2.setBirthday(person.getBirthday());
             personDtoV2.setGender(person.getGender());
             personDtoV2.setId(person.getId());
             personDtoV2.setAddress(person.getAddress());

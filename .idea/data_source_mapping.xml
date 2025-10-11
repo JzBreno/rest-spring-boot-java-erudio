@@ -2,5 +2,8 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/2f41bae0-b982-461d-a1b3-7aa5e3098516/console.sql" value="2f41bae0-b982-461d-a1b3-7aa5e3098516" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/2f41bae0-b982-461d-a1b3-7aa5e3098516/console_1.sql" value="2f41bae0-b982-461d-a1b3-7aa5e3098516" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/2f41bae0-b982-461d-a1b3-7aa5e3098516/console_2.sql" value="2f41bae0-b982-461d-a1b3-7aa5e3098516" />
+    <file url="file://$PROJECT_DIR$/est-spring-boot-java-erudio/src/main/resources/db/migration/V4__Create_Table_Pc.sql" value="2f41bae0-b982-461d-a1b3-7aa5e3098516" />
   </component>
 </project>

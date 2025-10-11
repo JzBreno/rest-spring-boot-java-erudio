@@ -2,9 +2,7 @@ package br.com.jzbreno.services;
 
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.mapper.ObjectMapper;
-import br.com.jzbreno.mapper.PersonMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
-import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;

@@ -1,0 +1,11 @@
+fundamentos teoricos api rest
+path paramans query params
+tratamento de excecoes -> clases handle globais
+verbos http -> get post put delete
+spring data jpa -> repository -> service -> controller
+logs no spring boot -> logback, SLF4J -> log4j2 -> log4j
+padrao de projeto -> DTO -> Vo para view
+versionamento de api -> por link /v2/, /v1/
+migrations -> flyway -> resouseces.db.migration -> V1__init.sql, U2__alter_table.sql
+custon Json serializarion -> @JsonSerialize, entre outros e config de json filter\
+content negotiation -> @Consumes, @Produces

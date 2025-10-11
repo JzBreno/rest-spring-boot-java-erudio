@@ -11,24 +11,24 @@ import java.time.LocalDate;
 import java.util.Date;
 
 //podemos usar o @JsonPropertyOrder para definir a ordem dos atributos da classe no json
-//@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})
-//@JsonFilter("PersonFilter")
+@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})
+@JsonFilter("PersonFilter")
 @Data
 public class PersonDTO implements Serializable {
     @Serial
     private final static long serialVersionUID = 1L;
 
     private Long id;
-//    @JsonProperty("first_name")
+    @JsonProperty("first_name")
     private String firstName;
-//    @JsonProperty("last_name")
+    @JsonProperty("last_name")
     private String lastName;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthday;
 
     private String address;
 
-//    @JsonIgnore
+    @JsonIgnore
     @JsonSerialize(using = GenderSerializer.class)
     private String gender;
 //    adicionando validacoes com anotacoes

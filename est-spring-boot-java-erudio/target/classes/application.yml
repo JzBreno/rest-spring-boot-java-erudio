@@ -17,6 +17,12 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
 
+  # ONDE ADICIONAR A CORREÇÃO TEMPORÁRIA DO FLYWAY:
+  flyway:
+    # Esta linha forçará o Flyway a corrigir o checksum da V5 falhada
+    repair-on-migrate: true
+    clean-disabled: false
+    clean-before-validation: true
 # Local correto para definir o nível de log
 logging:
   level:

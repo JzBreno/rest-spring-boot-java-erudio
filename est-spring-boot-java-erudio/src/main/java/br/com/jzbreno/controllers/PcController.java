@@ -19,29 +19,29 @@ public class PcController {
     }
 
     @GetMapping(value = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public PcDTO findById(@PathVariable(name = "id") String id){
         log.info("Finding Pc by id : " + id);
         return pcServices.findById(id);
     }
 
     @GetMapping(value = "/findAll",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public ResponseEntity<Iterable<PcDTO>> findAll(){
         log.info("Finding all Pc");
         return ResponseEntity.ok().body(pcServices.findAll());
     }
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE },
+            produces ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public ResponseEntity<PcDTO> create(@RequestBody PcDTO newComputer){
         return ResponseEntity.ok().body(pcServices.create(newComputer));
     }
 
     @PutMapping(value="/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE },
+            produces ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public ResponseEntity<PcDTO> updating(@RequestBody PcDTO newComputer){
         return ResponseEntity.ok().body(pcServices.updating(newComputer));
     }

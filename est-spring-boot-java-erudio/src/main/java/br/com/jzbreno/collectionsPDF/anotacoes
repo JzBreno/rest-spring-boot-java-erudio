@@ -8,4 +8,37 @@ padrao de projeto -> DTO -> Vo para view
 versionamento de api -> por link /v2/, /v1/
 migrations -> flyway -> resouseces.db.migration -> V1__init.sql, U2__alter_table.sql
 custon Json serializarion -> @JsonSerialize, entre outros e config de json filter\
-content negotiation -> @Consumes, @Produces
+content negotiation -> {
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
+        para xml e yaml se deve configurar um webconfig para ajustar o que vai ser retornado
+        para o yaml precisa de um serializer customizado
+        podendo usar query, path mas é recomendado usar header(evitar muitos parametros na url)
+}
+
+hateoas -> <dependency>
+                       <groupId>org.springframework.hateoas</groupId>
+                       <artifactId>spring-hateoas</artifactId>
+                   </dependency>
+apos isso teremos que informar que nossa classe suporta hateoas Extendendo  RepresentationModel<PersonDTO>:
+public class PersonDTO extends RepresentationModel<PersonDTO>
+
+podemos implementar no service, iremos centralizar as regras de negocio la
+podemos criar o metodo de hateoas completo
+
+private static void implementsHateoasPerson(PersonDTO personDTO) {
+        personDTO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel().withType("GET"));
+        personDTO.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        personDTO.add(linkTo(methodOn(PersonController.class).deleteById(id)).withRel("deleteById").withType("DELETE"));
+        personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
+        personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
+
+    }
+
+

@@ -4,6 +4,7 @@ import br.com.jzbreno.serializer.GenderSerializer;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.util.Date;
 @JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})
 @JsonFilter("PersonFilter")
 @Data
-public class PersonDTO implements Serializable {
+public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
     @Serial
     private final static long serialVersionUID = 1L;
 

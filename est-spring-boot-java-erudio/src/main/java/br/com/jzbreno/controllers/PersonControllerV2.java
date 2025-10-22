@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 // sda
 @RestController
 @RequestMapping("/person/v2")
@@ -30,7 +34,7 @@ public class PersonControllerV2 {
 
     //adicionado informacoes no request
     @GetMapping(value = "/findAll",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public ResponseEntity<List<PersonDTO2>> findAllV2(){
         List<PersonDTO2> people = personServices.findAllV2();
         if (people.isEmpty()) return ResponseEntity.noContent().build();
@@ -38,15 +42,15 @@ public class PersonControllerV2 {
     }
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE },
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public ResponseEntity<PersonDTO2> createV2(@RequestBody PersonDTO2 person){
         return ResponseEntity.ok().body(personServices.createV2(person));
     }
 
     @PutMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE },
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_YAML_VALUE })
     public ResponseEntity<PersonDTO2> update(@RequestBody PersonDTO2 person){
         return ResponseEntity.ok().body(personServices.updating(person));
     }

@@ -2,6 +2,7 @@ package br.com.jzbreno.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Service;
 
 import java.io.Serial;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-public class PersonDTO2 implements Serializable {
+public class PersonDTO2 extends RepresentationModel<PersonDTO2> implements Serializable  {
     @Serial
     private final static long serialVersionUID = 1L;
 

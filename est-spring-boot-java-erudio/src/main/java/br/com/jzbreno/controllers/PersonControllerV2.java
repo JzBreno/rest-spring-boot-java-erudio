@@ -3,6 +3,7 @@ package br.com.jzbreno.controllers;
 import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 // sda
+@Slf4j
 @RestController
 @RequestMapping("/person/v2")
 public class PersonControllerV2 {
@@ -60,4 +62,9 @@ public class PersonControllerV2 {
         personServices.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    public void teste(){
+        log.debug("Testando o logback");
+    }
+
 }

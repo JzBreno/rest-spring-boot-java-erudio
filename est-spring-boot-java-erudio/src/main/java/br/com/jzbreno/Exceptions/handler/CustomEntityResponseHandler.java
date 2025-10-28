@@ -1,6 +1,7 @@
 package br.com.jzbreno.Exceptions.handler;
 
 import br.com.jzbreno.Exceptions.ExceptionResponse;
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,16 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
                 request.getDescription(false));
         log.warn("Exception: {}", response);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
+    };
+
+    @ExceptionHandler(RequiredObjectIsNullException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse(new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+        log.warn("Exception: {}", response);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
     };
 

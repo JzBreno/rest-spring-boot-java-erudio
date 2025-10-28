@@ -1,5 +1,6 @@
 package br.com.jzbreno.services;
 
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.controllers.PersonController;
 import br.com.jzbreno.mapper.ObjectMapper;
@@ -47,6 +48,9 @@ public class PersonServices {
 
 
     public PersonDTO createV1(@NonNull PersonDTO person){
+
+        if(person == null) throw new RequiredObjectIsNullException();
+
         log.info("Creating person : " + person.toString());
         personRepository.save(ObjectMapper.parseObject(person, Person.class));
         implementsHateoasPerson(person);
@@ -56,6 +60,9 @@ public class PersonServices {
 
 
     public PersonDTO updating(PersonDTO person){
+
+        if(person == null) throw new RequiredObjectIsNullException();
+
         log.info("Updating person : " + person.toString() );
         PersonDTO personUpdate = findById(person.getId().toString());
         personUpdate.setFirstName(person.getFirstName());

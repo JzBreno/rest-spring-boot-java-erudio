@@ -45,7 +45,18 @@ public class PersonControllerV2 {
                             description = "Success - Person found",
                             responseCode = "200",
                             content = {
-                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonDTO.class))
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    ),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_XML_VALUE,
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    ),
+                                    @Content(
+                                            mediaType = "application/x-yaml",
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    )
                             }),
                     @ApiResponse(
                             description = "Not Found - The person with the provided ID does not exist.",
@@ -128,7 +139,18 @@ public class PersonControllerV2 {
                             description = "Created - Person successfully created",
                             responseCode = "200",
                             content = {
-                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonDTO.class))
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    ),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_XML_VALUE,
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    ),
+                                    @Content(
+                                            mediaType = "application/x-yaml",
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    )
                             }),
                     @ApiResponse(
                             description = "Bad Request - Invalid or incomplete data provided.",
@@ -165,7 +187,18 @@ public class PersonControllerV2 {
                             description = "Success - Person successfully updated",
                             responseCode = "200",
                             content = {
-                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonDTO.class))
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    ),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_XML_VALUE,
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    ),
+                                    @Content(
+                                            mediaType = "application/x-yaml",
+                                            schema = @Schema(implementation = PersonDTO.class)
+                                    )
                             }),
                     @ApiResponse(
                             description = "Bad Request - Invalid data format or missing required fields.",

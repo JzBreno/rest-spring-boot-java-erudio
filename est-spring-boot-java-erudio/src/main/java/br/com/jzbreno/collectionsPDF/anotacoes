@@ -41,4 +41,44 @@ private static void implementsHateoasPerson(PersonDTO personDTO) {
 
     }
 
+adicionando swagger no projeto
 
+adicionando o swagger nas dependencias no pom.xml
+
+<dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
+</dependency>
+
+configurando o que se deve documentar nesse projeto no properties
+
+spring-doc:
+  paths-to-match: /person/**/**
+  swagger-ui:
+    use-root-path: true
+
+teremos que inserir anotacao na classe controller ex:
+@Tag(name = "API REST Person", description = "Enpoint for managing Persons, version 1")
+
+apos isso temos que inserir as anotacoes nos endpoints
+
+ex:
+
+@Operation(
+            summary = "",
+            description = "",
+            tags = {""},
+            responses = {
+                    @ApiResponse(
+                            description = "Success - Person found",
+                            responseCode = "200",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonDTO.class))
+                            }),
+                    @ApiResponse(
+                            description = "Not Found - The person with the provided ID does not exist.",
+                            responseCode = "404",
+                            content = @Content),
+                    ETC;
+)

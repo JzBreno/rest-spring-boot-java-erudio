@@ -29,7 +29,7 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
 
     private String address;
 
-    @JsonIgnore
+//    @JsonIgnore
     @JsonSerialize(using = GenderSerializer.class)
     private String gender;
 //    adicionando validacoes com anotacoes

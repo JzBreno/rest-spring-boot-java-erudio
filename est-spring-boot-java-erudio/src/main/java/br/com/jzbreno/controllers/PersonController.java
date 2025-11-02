@@ -6,6 +6,7 @@ import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -93,7 +94,7 @@ public class PersonController{
                             description = "Success - Person found",
                             responseCode = "200",
                             content = {
-                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonDTO.class))
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class)))
                             }),
                     @ApiResponse(
                             description = "Not Found - The person with the provided ID does not exist.",

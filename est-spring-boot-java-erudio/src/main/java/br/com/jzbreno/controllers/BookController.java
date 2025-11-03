@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController()
 @RequestMapping("/book")
 @Slf4j
@@ -29,6 +31,13 @@ public class BookController {
     public ResponseEntity<BookDTO> getBookByID(@PathVariable(name = "id") String id ) {
         BookDTO bookDTO = bookServices.findById(Long.valueOf(id));
         return bookDTO != null ? ResponseEntity.ok(bookDTO) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "/findAll"
+                , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
+    public ResponseEntity<List<BookDTO>> findAllBooks() {
+        List<BookDTO> bookList = bookServices.findAllBooks();
+        return bookList != null ? ResponseEntity.ok(bookList) : ResponseEntity.notFound().build();
     }
 
 }

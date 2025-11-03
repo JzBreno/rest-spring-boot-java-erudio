@@ -7,6 +7,7 @@ import br.com.jzbreno.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +26,9 @@ public class BookServices {
         return bookDTO;
     }
 
+    public List<BookDTO> findAllBooks() {
+        List<BookDTO> bookList = bookMapper.parseBookDTOListToBookDTOList(bookRepository.findAll());
+        return bookList;
+    }
 
 }

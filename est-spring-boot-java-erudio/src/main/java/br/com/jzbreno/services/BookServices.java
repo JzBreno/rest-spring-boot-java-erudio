@@ -31,4 +31,11 @@ public class BookServices {
         return bookList;
     }
 
+    public BookDTO createBook(BookDTO bookDTO) {
+
+        bookRepository.save(bookMapper.parseBookDTOToBook(bookDTO));
+
+        return bookDTO;
+    }
+
 }

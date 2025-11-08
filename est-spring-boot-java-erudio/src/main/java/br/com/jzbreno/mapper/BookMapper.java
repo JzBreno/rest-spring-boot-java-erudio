@@ -12,12 +12,13 @@ import java.util.List;
 public class BookMapper {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public BookDTO parseBookToBookDTO(Book book) {
+
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(book.getId());
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setTitle(book.getTitle());
 
-        if (bookDTO.getLaunch_date() != null) {
+        if (book.getLaunch_date() != null) {
             bookDTO.setLaunch_date(String.valueOf(book.getLaunch_date()));
         }
 

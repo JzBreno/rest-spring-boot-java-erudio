@@ -24,7 +24,6 @@ public class PersonMapper {
         personDtoV2.setId(person.getId());
         personDtoV2.setAddress(person.getAddress());
 
-        // CORREÇÃO: Converte a String para LocalDate e verifica por null
         if (person.getBirthday() != null) {
             personDtoV2.setBirthday(person.getBirthday());
         }
@@ -41,7 +40,6 @@ public class PersonMapper {
         person.setAddress(personDTO2.getAddress());
         person.setBirthday(LocalDate.parse(personDTO2.getBirthday().format(FORMATTER), FORMATTER.withZone(ZoneId.systemDefault())));
 
-        // CORREÇÃO: Converte o LocalDate para String e verifica por null
         if (personDTO2.getBirthday() != null) {
             person.setBirthday(person.getBirthday());
         }
@@ -60,7 +58,6 @@ public class PersonMapper {
             personDtoV2.setId(person.getId());
             personDtoV2.setAddress(person.getAddress());
 
-            // CORREÇÃO: Converte a String para LocalDate e verifica por null
             if (person.getBirthday() != null) {
                 personDtoV2.setBirthday(person.getBirthday());
             }

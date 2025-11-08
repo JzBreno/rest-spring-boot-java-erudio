@@ -3,13 +3,14 @@ package br.com.jzbreno.model.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @JsonPropertyOrder({"id","title","author", "lauch_date", "price"})
 @Data
-public class BookDTO implements Serializable {
+public class BookDTO extends RepresentationModel<BookDTO> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @JsonProperty("id")

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/book")
-@Tag(name = "Book", description = "Enpoint for managing Book, version 2 with Content Negotiation and Others tecnologies")
+@Tag(name = "Book", description = "Enpoint for managing Book testes, version 2 with Content Negotiation and Others tecnologies")
 public class BookController implements BookControllerDoc {
 
     private BookServices bookServices;

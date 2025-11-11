@@ -33,6 +33,6 @@ logging:
     # Opcional: Para ver logs de baixo nível do Spring
     # org.springframework: DEBUG
 spring-doc:
-  paths-to-match: /person/**/**
+  paths-to-match: {/person/**/**, /book/**/**, /pc/**/**}
   swagger-ui:
     use-root-path: true

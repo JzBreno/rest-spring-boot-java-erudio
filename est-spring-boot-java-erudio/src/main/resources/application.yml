@@ -4,6 +4,8 @@ spring:
 
   # Configurações do Banco de Dados
   datasource:
+#    utilizar para producao
+#    url: jdbc:mysql://host.docker.internal:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: ${DB_PASSWORD}

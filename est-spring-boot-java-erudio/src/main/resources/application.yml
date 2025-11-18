@@ -9,7 +9,7 @@ spring:
     url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: ${DB_PASSWORD}
-
+    #docker run -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=admin123 -e SPRING_DATASOURCE_URL="jdbc:mysql://host.docker.internal:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true" -p 8080:8080 -d jzbreno/est-spring-boot-java-erudio:0.0.1-SNAPSHOT
   # Configurações do JPA e Hibernate
   jpa:
     hibernate:

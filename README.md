@@ -4,7 +4,7 @@ This project is a complete RESTful API implementation, developed using the **Spr
 
 The project is based on the development guides and best practices promoted by **Erudio Treinamentos**.
 
-## 🌟 Project Highlights
+## 🌟 Project Highlights  
 
 * **Complete RESTful CRUD:** Implementation of the four basic operations (Create, Read, Update, and Delete) for core resources (e.g., `Person`, `Book`, etc.).
 * **Spring Boot:** Utilization of Spring Boot for rapid configuration and standalone application execution.

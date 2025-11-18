@@ -9,7 +9,6 @@ import org.springframework.hateoas.RepresentationModel;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 //podemos usar o @JsonPropertyOrder para definir a ordem dos atributos da classe no json
 @JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})

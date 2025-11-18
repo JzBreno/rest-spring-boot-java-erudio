@@ -1,0 +1,4 @@
+br\com\jzbreno\services\PersonServicesTest.class
+br\com\jzbreno\unittests\mapper\mocks\MockPerson.class
+br\com\jzbreno\StartupTests.class
+br\com\jzbreno\unittests\mapper\ObjectMapperTests.class

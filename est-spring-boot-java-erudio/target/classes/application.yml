@@ -1,15 +1,16 @@
 spring:
   application:
     name: est-spring-boot-java-erudio
-
+  cors:
+    originPatterns: http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000
   # Configurações do Banco de Dados
   datasource:
 #    utilizar para producao
 #    url: jdbc:mysql://host.docker.internal:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: admin123
-
+    password: ${DB_PASSWORD}
+    #docker run -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=admin123 -e SPRING_DATASOURCE_URL="jdbc:mysql://host.docker.internal:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true" -p 8080:8080 -d jzbreno/est-spring-boot-java-erudio:0.0.1-SNAPSHOT
   # Configurações do JPA e Hibernate
   jpa:
     hibernate:

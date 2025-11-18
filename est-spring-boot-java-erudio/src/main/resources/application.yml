@@ -1,7 +1,8 @@
 spring:
   application:
     name: est-spring-boot-java-erudio
-
+  cors:
+    originPatterns: http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000
   # Configurações do Banco de Dados
   datasource:
 #    utilizar para producao

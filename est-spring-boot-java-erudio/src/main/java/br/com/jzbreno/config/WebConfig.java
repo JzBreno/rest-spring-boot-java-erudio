@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer{
     @Value("${spring.cors.originPatterns}")
     private String corsOriginPatterns = "";
+
     // via extension . http://localhost:8080/pc/findAll.xml or http://localhost:8080/pc/findAll.json was deprecated on spring boot 2.6
     // via query param http://localhost:8080/pc/findAll?mediaType=xml
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {

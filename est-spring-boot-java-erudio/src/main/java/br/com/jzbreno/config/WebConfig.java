@@ -1,5 +1,6 @@
 package br.com.jzbreno.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -7,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
+    @Value("${spring.cors.originPatterns}")
+    private String corsOriginPatterns = "";
 
     // via extension . http://localhost:8080/pc/findAll.xml or http://localhost:8080/pc/findAll.json was deprecated on spring boot 2.6
     // via query param http://localhost:8080/pc/findAll?mediaType=xml
@@ -19,6 +22,15 @@ public class WebConfig implements WebMvcConfigurer{
                 .defaultContentType(MediaType.APPLICATION_JSON) /// tipo padrao
                 .mediaType("xml", MediaType.APPLICATION_XML)
                 .mediaType("yaml", MediaType.APPLICATION_YAML); /// novo tipo suportado
+    }
+
+    @Override
+    public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+        var allowedOrigins = corsOriginPatterns.split(",");
+        registry.addMapping("/**") //aplicando a todos os enpoints
+                .allowedOrigins(allowedOrigins)//origens permitidas
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*");
     }
 
 }

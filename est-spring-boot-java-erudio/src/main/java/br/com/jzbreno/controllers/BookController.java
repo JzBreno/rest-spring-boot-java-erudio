@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
+//@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/book")
 @Tag(name = "Book", description = "Enpoint for managing Book testes, version 2 with Content Negotiation and Others tecnologies")
 public class BookController implements BookControllerDoc {
@@ -21,6 +22,7 @@ public class BookController implements BookControllerDoc {
         this.bookServices = bookServices;
     }
 
+//    @CrossOrigin(origins = {"http://localhost:8081"}) assim adiciona para cada endoint
     @GetMapping(value = "/{id}",
         produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     public ResponseEntity<BookDTO> getBookByID(@PathVariable(name = "id") String id ) {

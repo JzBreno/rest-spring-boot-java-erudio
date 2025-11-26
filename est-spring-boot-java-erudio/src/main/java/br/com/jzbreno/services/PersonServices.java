@@ -10,6 +10,7 @@ import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -73,6 +74,19 @@ public class PersonServices {
         implementsHateoasPerson(personUpdate);
         return personUpdate;
     }
+    //com essa anotacao, garante que os beans que usam de jpa query(fora do padrao do jpa) language cumpram com todos os requisitos de transacao
+    @Transactional
+    public PersonDTO disablePersonId(String id){
+
+
+        log.info("disable person : " + id);
+        personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id));
+        personRepository.disablePerson(Long.parseLong(id));
+        //cache de egundo nivelhibernate
+        //quando fazemos consultas duplicadas no hibernate ele pega do cache e nao faz uma consulta no banco novamente
+        return findById(id);
+
+    }
 
     public void deleteById(String id){
         log.info("Deleting person : " + id);
@@ -86,6 +100,7 @@ public class PersonServices {
         personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
         personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
+        personDTO.add(linkTo(methodOn(PersonController.class).disablePersonById(String.valueOf(personDTO.getId()))).withRel("disablePersonId").withType("PATCH"));
 
     }
 
@@ -96,6 +111,7 @@ public class PersonServices {
             personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
             personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
             personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
+            personDTO.add(linkTo(methodOn(PersonController.class).disablePersonById(String.valueOf(personDTO.getId()))).withRel("disablePersonId").withType("PATCH"));
         }
 
     }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 //podemos usar o @JsonPropertyOrder para definir a ordem dos atributos da classe no json
-@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})
+@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address", "enabled"})
 @JsonFilter("PersonFilter")
 @Data
 public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
@@ -36,6 +36,8 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     private String phoneNumber;
     //    adicionando validacoes com anotacoes
     private String email;
+    @JsonProperty("enabled")
+    private Boolean enabled;
 
 }
 

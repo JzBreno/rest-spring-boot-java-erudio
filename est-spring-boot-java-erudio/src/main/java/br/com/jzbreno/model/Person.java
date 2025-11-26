@@ -27,6 +27,8 @@ public class Person implements Serializable {
     private String gender;
     @Column(name = "birthday")
     private LocalDate birthday;
+    @Column(nullable = false)
+    private Boolean enabled;
 
 
 }

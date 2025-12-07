@@ -8,6 +8,8 @@ import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,12 +40,22 @@ public class PersonServices {
         return personDTO;
     }
 
-    public List<PersonDTO> findAll(){
+    //Pageable e a interface que recebe indice de busca, tamanho da busca e ordencacao, ainda retorna alguns metadados importantes
+    // como qtd de registros etc
+    public Page<PersonDTO> findAll(Pageable pageable){
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
-        List<PersonDTO> listaDto = ObjectMapper.parseObjectList(personRepository.findAll(), PersonDTO.class);
-        implementsHateoasPerson(listaDto);
-        return listaDto;
+
+        Page<Person> people = personRepository.findAll(pageable);
+
+        Page<PersonDTO> peopleWithLinks = people.map(person -> {
+            var dto = ObjectMapper.parseObject(person, PersonDTO.class);
+            implementsHateoasPerson(dto);
+            return dto;
+        });
+
+
+        return peopleWithLinks;
     }
 
 
@@ -96,7 +108,7 @@ public class PersonServices {
 
     private static void implementsHateoasPerson(PersonDTO personDTO) {
         personDTO.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
-        personDTO.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15)).withRel("findAll").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
         personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
@@ -107,7 +119,7 @@ public class PersonServices {
     private static void implementsHateoasPerson(List<PersonDTO> personDTOList) {
         for (PersonDTO personDTO : personDTOList) {
             personDTO.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
-            personDTO.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+            personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15)).withRel("findAll").withType("GET"));
             personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
             personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
             personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));

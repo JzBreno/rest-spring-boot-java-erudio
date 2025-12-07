@@ -11,6 +11,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -108,8 +112,12 @@ public class PersonController{
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
             }
     )
-    public ResponseEntity<List<PersonDTO>> findAll(){
-        List<PersonDTO> people = personServices.findAll();
+    public ResponseEntity<Page<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                   @RequestParam(value = "size", defaultValue = "15") Integer size) {
+        //criando paginacao, pagerequest.of monta o pageable
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PersonDTO> people = personServices.findAll(pageable);
+
         if (people.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
     }

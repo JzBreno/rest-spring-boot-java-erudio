@@ -113,9 +113,13 @@ public class PersonController{
             }
     )
     public ResponseEntity<Page<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                   @RequestParam(value = "size", defaultValue = "15") Integer size) {
+                                                   @RequestParam(value = "size", defaultValue = "15") Integer size,
+                                                   @RequestParam(value = "direction", defaultValue = "asc") String direction,
+                                                   @RequestParam(value = "properties", defaultValue = "firstName") String properties
+                                                   ) {
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         //criando paginacao, pagerequest.of monta o pageable
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties) );
         Page<PersonDTO> people = personServices.findAll(pageable);
 
         if (people.isEmpty()) return ResponseEntity.noContent().build();

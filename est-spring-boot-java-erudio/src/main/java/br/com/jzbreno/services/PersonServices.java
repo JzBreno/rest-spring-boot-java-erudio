@@ -8,6 +8,8 @@ import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.converters.models.Sort;
+import org.springdoc.core.converters.models.SortObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
@@ -108,7 +110,7 @@ public class PersonServices {
 
     private static void implementsHateoasPerson(PersonDTO personDTO) {
         personDTO.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
-        personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15)).withRel("findAll").withType("GET"));
+        personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15, "asc", "firstName")).withRel("findAll").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
         personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
@@ -119,7 +121,7 @@ public class PersonServices {
     private static void implementsHateoasPerson(List<PersonDTO> personDTOList) {
         for (PersonDTO personDTO : personDTOList) {
             personDTO.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
-            personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15)).withRel("findAll").withType("GET"));
+            personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15,"asc","firstName")).withRel("findAll").withType("GET"));
             personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
             personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
             personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));

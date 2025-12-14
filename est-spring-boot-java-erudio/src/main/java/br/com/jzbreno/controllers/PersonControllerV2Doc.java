@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -93,7 +96,10 @@ public interface PersonControllerV2Doc {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
             }
     )
-    ResponseEntity<List<PersonDTO2>> findAllV2();
+    ResponseEntity<Page<PersonDTO2>> findAllV2(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                               @RequestParam(name = "size", defaultValue = "15") Integer size,
+                                               @RequestParam(name = "direction", defaultValue = "firstName") String direction,
+                                               @RequestParam(name = "sort", defaultValue = "asc") String properties);
 
     @Operation(
             summary = "Create a new Person",

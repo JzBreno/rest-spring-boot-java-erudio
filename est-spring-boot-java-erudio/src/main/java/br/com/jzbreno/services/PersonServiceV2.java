@@ -10,6 +10,8 @@ import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +40,17 @@ public class PersonServiceV2 {
 //        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO2.class);
     }
 
-    public List<PersonDTO2> findAllV2(){
+    public Page<PersonDTO2> findAllV2(Pageable pageable){
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
-        List<PersonDTO2> personDTO2 = personMapper.parseListPersonDTOV2(personRepository.findAll());
-        implementsHateoasPerson(personDTO2);
-        return personDTO2;
+        Page<PersonDTO2> pagePersonDto2 = personRepository.findAll(pageable).map(person -> personMapper.parsePersonDTOV2(person));
+        pagePersonDto2.stream().map( person -> {
+            var dto = ObjectMapper.parseObject( person, PersonDTO2.class);
+            implementsHateoasPerson(dto);
+            return dto;
+        });
+
+        return pagePersonDto2;
     }
 
     public PersonDTO2 createV2(@NonNull PersonDTO2 person){
@@ -75,7 +82,7 @@ public class PersonServiceV2 {
 
     private static void implementsHateoasPerson(PersonDTO2 personDTO) {
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).findByIdV2(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
-        personDTO.add(linkTo(methodOn(PersonControllerV2.class).findAllV2()).withRel("findAll").withType("GET"));
+        personDTO.add(linkTo(methodOn(PersonControllerV2.class).findAllV2(0, 15, "asc", "firstName")).withRel("findAll").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).createV2(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).update(personDTO)).withRel("update").withType("PUT"));
@@ -85,7 +92,7 @@ public class PersonServiceV2 {
     private static void implementsHateoasPerson(List<PersonDTO2> personDTOList) {
         for (PersonDTO2 personDTO : personDTOList) {
             personDTO.add(linkTo(methodOn(PersonControllerV2.class).findByIdV2(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
-            personDTO.add(linkTo(methodOn(PersonControllerV2.class).findAllV2()).withRel("findAll").withType("GET"));
+            personDTO.add(linkTo(methodOn(PersonControllerV2.class).findAllV2(0, 15, "asc", "firstName")).withRel("findAll").withType("GET"));
             personDTO.add(linkTo(methodOn(PersonControllerV2.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
             personDTO.add(linkTo(methodOn(PersonControllerV2.class).createV2(personDTO)).withRel("createV1").withType("POST"));
             personDTO.add(linkTo(methodOn(PersonControllerV2.class).update(personDTO)).withRel("update").withType("PUT"));

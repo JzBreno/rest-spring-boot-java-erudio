@@ -11,6 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +51,14 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
     @GetMapping(value = "/findAll",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<List<PersonDTO2>> findAllV2(){
-        List<PersonDTO2> people = personServices.findAllV2();
+    public ResponseEntity<Page<PersonDTO2>> findAllV2(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                      @RequestParam(name = "size", defaultValue = "15") Integer size,
+                                                      @RequestParam(name = "direction", defaultValue = "asc") String direction,
+                                                      @RequestParam(name = "properties", defaultValue = "firstName") String properties){
+
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(properties) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageableValue = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+        Page<PersonDTO2> people = personServices.findAllV2(pageableValue);
         if (people.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
     }

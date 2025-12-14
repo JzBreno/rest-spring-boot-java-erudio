@@ -56,7 +56,6 @@ public class PersonServices {
             return dto;
         });
 
-
         return peopleWithLinks;
     }
 

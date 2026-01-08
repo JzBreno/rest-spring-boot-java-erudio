@@ -35,6 +35,8 @@ logging:
     br.com.jzbreno: DEBUG
     # Opcional: Para ver logs de baixo nível do Spring
     # org.springframework: DEBUG
+
+    #CONFIGURACAO DA DOCUMENTACAO SWAGGER
 spring-doc:
   paths-to-match: {/person/**/**, /book/**/**, /pc/**/**}
   swagger-ui:

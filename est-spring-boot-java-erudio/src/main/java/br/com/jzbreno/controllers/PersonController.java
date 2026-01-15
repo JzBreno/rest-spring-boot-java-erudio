@@ -11,10 +11,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -112,7 +116,7 @@ public class PersonController{
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
             }
     )
-    public ResponseEntity<Page<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO>>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(value = "size", defaultValue = "15") Integer size,
                                                    @RequestParam(value = "direction", defaultValue = "asc") String direction,
                                                    @RequestParam(value = "properties", defaultValue = "firstName") String properties
@@ -120,9 +124,9 @@ public class PersonController{
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         //criando paginacao, pagerequest.of monta o pageable
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties) );
-        Page<PersonDTO> people = personServices.findAll(pageable);
+        PagedModel<EntityModel<PersonDTO>> people = personServices.findAll(pageable);
 
-        if (people.isEmpty()) return ResponseEntity.noContent().build();
+        if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
     }
 

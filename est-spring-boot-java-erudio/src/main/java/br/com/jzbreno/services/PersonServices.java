@@ -10,8 +10,14 @@ import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.converters.models.Sort;
 import org.springdoc.core.converters.models.SortObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +36,8 @@ public class PersonServices {
 //    private final AtomicLong counter = new AtomicLong();
 //    private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
     private final PersonRepository personRepository;
+    @Autowired
+    PagedResourcesAssembler<PersonDTO> pagedResourcesAssembler;
 
     public PersonServices(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -44,7 +52,7 @@ public class PersonServices {
 
     //Pageable e a interface que recebe indice de busca, tamanho da busca e ordencacao, ainda retorna alguns metadados importantes
     // como qtd de registros etc
-    public Page<PersonDTO> findAll(Pageable pageable){
+    public PagedModel<EntityModel<PersonDTO>> findAll(Pageable pageable){
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
 
@@ -56,7 +64,15 @@ public class PersonServices {
             return dto;
         });
 
-        return peopleWithLinks;
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonController.class)
+                                .findAll(pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort()),
+                                        "firstName"
+                        )).withSelfRel();
+
+        return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
 
 

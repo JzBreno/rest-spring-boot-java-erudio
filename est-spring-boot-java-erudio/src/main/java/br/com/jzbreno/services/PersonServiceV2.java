@@ -1,7 +1,6 @@
 package br.com.jzbreno.services;
 
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
-import br.com.jzbreno.controllers.PersonController;
 import br.com.jzbreno.controllers.PersonControllerV2;
 import br.com.jzbreno.mapper.ObjectMapper;
 import br.com.jzbreno.mapper.PersonMapper;
@@ -10,8 +9,14 @@ import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +31,9 @@ public class PersonServiceV2 {
 
     private final PersonRepository personRepository;
     private PersonMapper personMapper = new PersonMapper();
+    @Autowired
+    private PagedResourcesAssembler<PersonDTO2> pagedResourcesAssembler;
 
-//dasda
     public PersonServiceV2(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
@@ -40,17 +46,27 @@ public class PersonServiceV2 {
 //        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO2.class);
     }
 
-    public Page<PersonDTO2> findAllV2(Pageable pageable){
+    public PagedModel<EntityModel<PersonDTO2>> findAllV2(Pageable pageable){
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
         Page<PersonDTO2> pagePersonDto2 = personRepository.findAll(pageable).map(person -> personMapper.parsePersonDTOV2(person));
-        pagePersonDto2.stream().map( person -> {
-            var dto = ObjectMapper.parseObject( person, PersonDTO2.class);
+
+        Page<PersonDTO2> peopleWithLinks = pagePersonDto2.map(person -> {
+            var dto = ObjectMapper.parseObject(person, PersonDTO2.class);
             implementsHateoasPerson(dto);
             return dto;
         });
 
-        return pagePersonDto2;
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonControllerV2.class)
+                        .findAllV2(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort()),
+                                "firstName")
+        ).withSelfRel();
+
+
+        return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
 
     public PersonDTO2 createV2(@NonNull PersonDTO2 person){

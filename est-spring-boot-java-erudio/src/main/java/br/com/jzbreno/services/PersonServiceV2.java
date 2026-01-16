@@ -48,7 +48,7 @@ public class PersonServiceV2 {
         ).withSelfRel();
         Link deleteLink = linkTo(
                 methodOn(PersonControllerV2.class).deleteById(id)
-        ).withSelfRel();
+        ).withSelfRel().withType("delete");
 
         return EntityModel.of(personDTO2)
                 .add(selfLink)

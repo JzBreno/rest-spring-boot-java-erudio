@@ -31,6 +31,7 @@ public class PersonServiceV2 {
 
     private final PersonRepository personRepository;
     private PersonMapper personMapper = new PersonMapper();
+//    necessario para mappear o objeto com links HAL
     @Autowired
     private PagedResourcesAssembler<PersonDTO2> pagedResourcesAssembler;
 
@@ -38,11 +39,14 @@ public class PersonServiceV2 {
         this.personRepository = personRepository;
     }
 
-    public PersonDTO2 findByIdV2(String id){
+    public EntityModel<PersonDTO2> findByIdV2(String id){
         log.info("Finding person by id : " + id);
         PersonDTO2 personDTO2 = personMapper.parsePersonDTOV2(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)));
         implementsHateoasPerson(personDTO2);
-        return personDTO2;
+        Link selfLink = linkTo(
+                methodOn(PersonControllerV2.class).findByIdV2(id)
+        ).withSelfRel();
+        return EntityModel.of(personDTO2).add(selfLink);
 //        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO2.class);
     }
 
@@ -78,7 +82,7 @@ public class PersonServiceV2 {
 
     public PersonDTO2 updating(PersonDTO2 person){
         log.info("Updating person : " + person.toString() );
-        PersonDTO2 personUpdate = findByIdV2(person.getId().toString());
+        PersonDTO2 personUpdate = findByIdV2(person.getId().toString()).getContent();
         personUpdate.setFirstName(person.getFirstName());
         personUpdate.setLastName(person.getLastName());
         personUpdate.setGender(person.getGender());
@@ -93,7 +97,6 @@ public class PersonServiceV2 {
     public void deleteById(String id){
         log.info("Deleting person : " + id);
         personRepository.deleteById(Long.parseLong(id));
-        implementsHateoasPerson(findByIdV2(id));
     }
 
     private static void implementsHateoasPerson(PersonDTO2 personDTO) {

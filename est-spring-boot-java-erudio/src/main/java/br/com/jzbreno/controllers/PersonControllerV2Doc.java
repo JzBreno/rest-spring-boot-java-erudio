@@ -62,7 +62,7 @@ public interface PersonControllerV2Doc {
                     )
             }
     )
-    ResponseEntity<PersonDTO2> findByIdV2(@PathVariable(name = "id") String id);
+    ResponseEntity<EntityModel<PersonDTO2>> findByIdV2(@PathVariable(name = "id") String id);
 
     @Operation(
             summary = "Find a list of All Person in Database",

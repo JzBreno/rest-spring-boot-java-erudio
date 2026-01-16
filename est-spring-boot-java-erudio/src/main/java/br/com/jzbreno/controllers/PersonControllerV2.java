@@ -33,8 +33,8 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PersonDTO2> findByIdV2(@PathVariable(name = "id") String id){
-        PersonDTO2 person = personServices.findByIdV2(id);
+    public ResponseEntity<EntityModel<PersonDTO2>> findByIdV2(@PathVariable(name = "id") String id){
+        EntityModel<PersonDTO2> person = personServices.findByIdV2(id);
         if(person != null) return ResponseEntity.ok().body(person);
         else return ResponseEntity.notFound().build();
     }

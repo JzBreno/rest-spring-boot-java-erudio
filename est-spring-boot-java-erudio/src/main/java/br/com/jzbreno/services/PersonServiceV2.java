@@ -46,7 +46,13 @@ public class PersonServiceV2 {
         Link selfLink = linkTo(
                 methodOn(PersonControllerV2.class).findByIdV2(id)
         ).withSelfRel();
-        return EntityModel.of(personDTO2).add(selfLink);
+        Link deleteLink = linkTo(
+                methodOn(PersonControllerV2.class).deleteById(id)
+        ).withSelfRel();
+
+        return EntityModel.of(personDTO2)
+                .add(selfLink)
+                .add(deleteLink);
 //        return ObjectMapper.parseObject(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)), PersonDTO2.class);
     }
 

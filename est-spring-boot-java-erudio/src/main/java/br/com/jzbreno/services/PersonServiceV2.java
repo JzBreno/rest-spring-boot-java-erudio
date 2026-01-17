@@ -20,6 +20,8 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -43,6 +45,7 @@ public class PersonServiceV2 {
         log.info("Finding person by id : " + id);
         PersonDTO2 personDTO2 = personMapper.parsePersonDTOV2(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)));
         implementsHateoasPerson(personDTO2);
+        //adicionando HAL
         Link selfLink = linkTo(
                 methodOn(PersonControllerV2.class).findByIdV2(id)
         ).withSelfRel();
@@ -67,6 +70,7 @@ public class PersonServiceV2 {
             return dto;
         });
 
+        //adicionado HAL
         Link findAllLink = WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(PersonControllerV2.class)
                         .findAllV2(pageable.getPageNumber(),
@@ -79,11 +83,49 @@ public class PersonServiceV2 {
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
 
-    public PersonDTO2 createV2(@NonNull PersonDTO2 person){
-        log.info("Creating person : " + person.toString());
-        personRepository.save(personMapper.parseDT0V2Person(person));
-        implementsHateoasPerson(person);
-        return person;
+    public EntityModel<PersonDTO2> createV2(@NonNull PersonDTO2 personDTO){ // Renomeei para personDTO para clareza
+        log.info("Creating person : " + personDTO.toString());
+
+        // 1. Converte DTO -> Entity
+        Person entity = personMapper.parseDT0V2Person(personDTO);
+
+        // 2. Salva e CAPTURA o retorno (aqui está o ID gerado!)
+        Person savedEntity = personRepository.save(entity);
+
+        // 3. Atualiza o DTO com o ID que veio do banco
+        personDTO.setId(savedEntity.getId());
+
+        // 4. Gera os links
+        implementsHateoasPerson(personDTO);
+        List<Link> selfLink = generateHAL(personDTO);
+
+        return EntityModel.of(personDTO, selfLink);
+    }
+
+    private List<Link> generateHAL(PersonDTO2 person) {
+        List<Link> links = new ArrayList<>();
+        Link self = linkTo(
+                methodOn(PersonControllerV2.class).createV2(person)
+        ).withSelfRel().withType("create");
+        Link findById = linkTo(
+                methodOn(PersonControllerV2.class).findByIdV2(person.getId().toString())
+        ).withRel("findById");
+        Link findAll = linkTo(
+                methodOn(PersonControllerV2.class).findAllV2(0, 1, "asc", "FirstName" )
+        ).withRel("findAll");
+        Link delete = linkTo(
+                methodOn(PersonControllerV2.class).deleteById(person.getId().toString())
+        ).withRel("delete");
+        Link update = linkTo(
+                methodOn(PersonControllerV2.class).update(person)
+        ).withRel("update");
+
+        links.add(self);
+        links.add(findById);
+        links.add(findAll);
+        links.add(delete);
+        links.add(update);
+        return links;
     }
 
     public PersonDTO2 updating(PersonDTO2 person){

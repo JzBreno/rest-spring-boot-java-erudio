@@ -4,7 +4,6 @@ import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,9 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
-// sda
 @Slf4j
 @RestController
 @RequestMapping("/person/v2")
@@ -60,8 +56,9 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PersonDTO2> createV2(@RequestBody PersonDTO2 person){
-        return ResponseEntity.ok().body(personServices.createV2(person));
+    public ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person){
+        EntityModel<PersonDTO2> createdPerson = personServices.createV2(person);
+        return ResponseEntity.ok().body(createdPerson);
     }
 
     @PutMapping(

@@ -28,7 +28,7 @@ public class Person implements Serializable {
     @Column(name = "birthday")
     private LocalDate birthday;
     @Column(nullable = false)
-    private Boolean enabled;
+    private Boolean enabled = true;
 
 
 }

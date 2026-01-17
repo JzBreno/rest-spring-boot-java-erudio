@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
@@ -114,7 +115,18 @@ public interface PersonControllerV2Doc {
                             content = {
                                     @Content(
                                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                            schema = @Schema(implementation = PersonDTO.class)
+                                            schema = @Schema(implementation = PersonDTO.class),
+                                            examples = @ExampleObject(
+                                                    value = """
+                                                                {
+                                                                  "firstName": "João",
+                                                                  "lastName": "Silva",
+                                                                  "address": "Avenida Paulista, 1000",
+                                                                  "gender": "Male",
+                                                                  "birthday": "1990-05-20"
+                                                                }
+                                                            """
+                                            )
                                     ),
                                     @Content(
                                             mediaType = MediaType.APPLICATION_XML_VALUE,
@@ -144,7 +156,7 @@ public interface PersonControllerV2Doc {
             },
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody()
     )
-    ResponseEntity<PersonDTO2> createV2(@RequestBody PersonDTO2 person);
+    ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person);
 
     @Operation(
             summary = "Update an existing Person",

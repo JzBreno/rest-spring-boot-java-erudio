@@ -5,15 +5,17 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 //podemos usar o @JsonPropertyOrder para definir a ordem dos atributos da classe no json
-@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address"})
+@JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address", "enabled"})
 @JsonFilter("PersonFilter")
 @Data
+@Relation(collectionRelation = "People")
 public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
     @Serial
     private final static long serialVersionUID = 1L;
@@ -36,6 +38,8 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     private String phoneNumber;
     //    adicionando validacoes com anotacoes
     private String email;
+    @JsonProperty("enabled")
+    private Boolean enabled;
 
 }
 

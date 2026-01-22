@@ -6,8 +6,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +63,7 @@ public interface PersonControllerV2Doc {
                     )
             }
     )
-    ResponseEntity<PersonDTO2> findByIdV2(@PathVariable(name = "id") String id);
+    ResponseEntity<EntityModel<PersonDTO2>> findByIdV2(@PathVariable(name = "id") String id);
 
     @Operation(
             summary = "Find a list of All Person in Database",
@@ -93,7 +99,10 @@ public interface PersonControllerV2Doc {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
             }
     )
-    ResponseEntity<List<PersonDTO2>> findAllV2();
+    ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findAllV2(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                 @RequestParam(name = "size", defaultValue = "15") Integer size,
+                                                                 @RequestParam(name = "direction", defaultValue = "firstName") String direction,
+                                                                 @RequestParam(name = "sort", defaultValue = "asc") String properties);
 
     @Operation(
             summary = "Create a new Person",
@@ -106,7 +115,18 @@ public interface PersonControllerV2Doc {
                             content = {
                                     @Content(
                                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                            schema = @Schema(implementation = PersonDTO.class)
+                                            schema = @Schema(implementation = PersonDTO.class),
+                                            examples = @ExampleObject(
+                                                    value = """
+                                                                {
+                                                                  "firstName": "João",
+                                                                  "lastName": "Silva",
+                                                                  "address": "Avenida Paulista, 1000",
+                                                                  "gender": "Male",
+                                                                  "birthday": "1990-05-20"
+                                                                }
+                                                            """
+                                            )
                                     ),
                                     @Content(
                                             mediaType = MediaType.APPLICATION_XML_VALUE,
@@ -136,7 +156,7 @@ public interface PersonControllerV2Doc {
             },
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody()
     )
-    ResponseEntity<PersonDTO2> createV2(@RequestBody PersonDTO2 person);
+    ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person);
 
     @Operation(
             summary = "Update an existing Person",

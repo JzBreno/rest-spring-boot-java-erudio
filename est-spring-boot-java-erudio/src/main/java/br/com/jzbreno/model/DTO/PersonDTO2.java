@@ -23,6 +23,7 @@ public class PersonDTO2 extends RepresentationModel<PersonDTO2> implements Seria
     private String gender;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+    private Boolean enabled;
 
 
 }

@@ -1,26 +1,18 @@
 package br.com.jzbreno.controllers;
 
-import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-// sda
 @Slf4j
 @RestController
 @RequestMapping("/person/v2")
@@ -37,8 +29,8 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PersonDTO2> findByIdV2(@PathVariable(name = "id") String id){
-        PersonDTO2 person = personServices.findByIdV2(id);
+    public ResponseEntity<EntityModel<PersonDTO2>> findByIdV2(@PathVariable(name = "id") String id){
+        EntityModel<PersonDTO2> person = personServices.findByIdV2(id);
         if(person != null) return ResponseEntity.ok().body(person);
         else return ResponseEntity.notFound().build();
     }
@@ -47,9 +39,16 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
     @GetMapping(value = "/findAll",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<List<PersonDTO2>> findAllV2(){
-        List<PersonDTO2> people = personServices.findAllV2();
-        if (people.isEmpty()) return ResponseEntity.noContent().build();
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findAllV2(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                         @RequestParam(name = "size", defaultValue = "15") Integer size,
+                                                                         @RequestParam(name = "direction", defaultValue = "asc") String direction,
+                                                                         @RequestParam(name = "properties", defaultValue = "firstName") String properties){
+
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(properties) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageableValue = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+        PagedModel<EntityModel<PersonDTO2>> people = personServices.findAllV2(pageableValue);
+
+        if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
     }
 
@@ -57,8 +56,9 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PersonDTO2> createV2(@RequestBody PersonDTO2 person){
-        return ResponseEntity.ok().body(personServices.createV2(person));
+    public ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person){
+        EntityModel<PersonDTO2> createdPerson = personServices.createV2(person);
+        return ResponseEntity.ok().body(createdPerson);
     }
 
     @PutMapping(

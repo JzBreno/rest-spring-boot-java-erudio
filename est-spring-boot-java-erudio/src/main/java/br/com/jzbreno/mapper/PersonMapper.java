@@ -22,6 +22,7 @@ public class PersonMapper {
         personDtoV2.setGender(person.getGender());
         personDtoV2.setBirthday(person.getBirthday());
         personDtoV2.setId(person.getId());
+        personDtoV2.setEnabled(person.getEnabled());
         personDtoV2.setAddress(person.getAddress());
 
         if (person.getBirthday() != null) {
@@ -36,10 +37,10 @@ public class PersonMapper {
         person.setFirstName(personDTO2.getFirstName());
         person.setLastName(personDTO2.getLastName());
         person.setGender(personDTO2.getGender());
-        person.setId(personDTO2.getId());
+//        person.setId(personDTO2.getId());
         person.setAddress(personDTO2.getAddress());
         person.setBirthday(LocalDate.parse(personDTO2.getBirthday().format(FORMATTER), FORMATTER.withZone(ZoneId.systemDefault())));
-
+        person.setEnabled(person.getEnabled());
         if (personDTO2.getBirthday() != null) {
             person.setBirthday(person.getBirthday());
         }

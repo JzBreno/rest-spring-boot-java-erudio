@@ -73,6 +73,29 @@ public class PersonServices {
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
 
+    public PagedModel<EntityModel<PersonDTO>> findPersonByName(String firstName, Pageable pageable){
+        log.info("Finding all people");
+        log.info("list of people : " + personRepository.findPersonByFirstName(firstName, pageable).toString());
+
+        Page<Person> people = personRepository.findPersonByFirstName(firstName, pageable);
+
+        Page<PersonDTO> peopleWithLinks = people.map(person -> {
+            var dto = ObjectMapper.parseObject(person, PersonDTO.class);
+            implementsHateoasPerson(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonController.class)
+                                .findAll(pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort()),
+                                        "firstName"
+                        )).withSelfRel();
+
+        return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
+    }
+
 
 
     public PersonDTO createV1(@NonNull PersonDTO person){

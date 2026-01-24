@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,6 +48,17 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(properties) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageableValue = PageRequest.of(page, size, Sort.by(sortDirection, properties));
         PagedModel<EntityModel<PersonDTO2>> people = personServices.findAllV2(pageableValue);
+
+        if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(people);
+    }
+
+    @GetMapping(value = "/findbyname/{name}")
+    @Override
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findPersonByName(Integer page, Integer size, String direction, String properties, String firstName) {
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(properties) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageableValue = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+        PagedModel<EntityModel<PersonDTO2>> people = personServices.findbyFirstName(firstName, pageableValue);
 
         if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);

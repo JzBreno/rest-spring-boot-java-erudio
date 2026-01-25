@@ -17,6 +17,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,30 @@ public class PersonServiceV2 {
         log.info("Finding all people");
         log.info("list of people : " + personRepository.findAll().toString());
         Page<PersonDTO2> pagePersonDto2 = personRepository.findAll(pageable).map(person -> personMapper.parsePersonDTOV2(person));
+
+        Page<PersonDTO2> peopleWithLinks = pagePersonDto2.map(person -> {
+            var dto = ObjectMapper.parseObject(person, PersonDTO2.class);
+            implementsHateoasPerson(dto);
+            return dto;
+        });
+
+        //adicionado HAL
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonControllerV2.class)
+                        .findAllV2(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort()),
+                                "firstName")
+        ).withSelfRel();
+
+
+        return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
+    }
+
+    public PagedModel<EntityModel<PersonDTO2>> findbyFirstName(String firstName, Pageable pageable){
+        log.info("Finding all people");
+        log.info("list of people : " + personRepository.findPersonByFirstName(firstName, pageable).toString());
+        Page<PersonDTO2> pagePersonDto2 = personRepository.findPersonByFirstName(firstName, pageable).map(person -> personMapper.parsePersonDTOV2(person));
 
         Page<PersonDTO2> peopleWithLinks = pagePersonDto2.map(person -> {
             var dto = ObjectMapper.parseObject(person, PersonDTO2.class);

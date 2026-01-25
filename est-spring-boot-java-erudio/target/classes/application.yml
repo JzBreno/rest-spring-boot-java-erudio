@@ -1,6 +1,9 @@
 spring:
   application:
     name: est-spring-boot-java-erudio
+  file:
+    upload-dir: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload
+    #setando nossos enderecos autorizados para requisicao
   cors:
     originPatterns: http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000
   # Configurações do Banco de Dados
@@ -19,7 +22,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
-
+  #Configuracoes de multipart para enviar e receber arquivos
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
   # ONDE ADICIONAR A CORREÇÃO TEMPORÁRIA DO FLYWAY:
   flyway:
     # Esta linha forçará o Flyway a corrigir o checksum da V5 falhada
@@ -27,17 +36,17 @@ spring:
     clean-disabled: false
     clean-before-validation: true
 # Local correto para definir o nível de log
-logging:
-  level:
-    #configurando para toda aplicacao rodar em nivel de WARN
-    root: INFO
-    # Aumenta o nível de log para o seu pacote
-    br.com.jzbreno: DEBUG
-    # Opcional: Para ver logs de baixo nível do Spring
-    # org.springframework: DEBUG
+  logging:
+    level:
+      #configurando para toda aplicacao rodar em nivel de WARN
+      root: INFO
+      # Aumenta o nível de log para o seu pacote
+      br.com.jzbreno: DEBUG
+      # Opcional: Para ver logs de baixo nível do Spring
+      # org.springframework: DEBUG
 
     #CONFIGURACAO DA DOCUMENTACAO SWAGGER
-spring-doc:
-  paths-to-match: {/person/**/**, /book/**/**, /pc/**/**}
-  swagger-ui:
-    use-root-path: true
+  spring-doc:
+    paths-to-match: {/person/**/**, /book/**/**, /pc/**/**}
+    swagger-ui:
+      use-root-path: true

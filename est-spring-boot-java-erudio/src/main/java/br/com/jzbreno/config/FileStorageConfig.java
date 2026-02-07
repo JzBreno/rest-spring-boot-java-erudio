@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "file")
+@ConfigurationProperties(prefix = "file") //dessa forma referenciamos as configuracoes do yml
 public class FileStorageConfig {
 
     private String uploadDir;

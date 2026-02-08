@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -23,11 +25,30 @@ public class FileController implements FIleControllerDocs{
     @Autowired
     private FileStorageService fileStorageService;
 
-    @PostMapping(value = "/uploadfile")
+    @PostMapping(value = "/uploadFile")
     @Override
-    public UploadFileResponseDTO uploadFile(MultipartFile file) {
-        return null;
+    public UploadFileResponseDTO uploadFile(@RequestParam("file") MultipartFile file) {
+        fileStorageService.storeFile(file);
+        UploadFileResponseDTO uploadFileResponseDTO = new UploadFileResponseDTO();
+        uploadFileResponseDTO = generateResponse(file, uploadFileResponseDTO);
+        return uploadFileResponseDTO;
     }
+
+    private UploadFileResponseDTO generateResponse(MultipartFile file, UploadFileResponseDTO uploadFileResponseDTO) {
+        // http://localhost:8080/api/files/v1/downloadfile/nomedoArquivo
+        var fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath() //montando o caminho onde esta o arquivo para setar o download
+                        .path("/api/files/v1/downloadfile/")
+                        .path(file.getOriginalFilename())
+                        .toUriString();
+
+        uploadFileResponseDTO.setFileName(file.getOriginalFilename());
+        uploadFileResponseDTO.setFileSize(file.getSize());
+        uploadFileResponseDTO.setFileType(file.getContentType());
+        uploadFileResponseDTO.setFileName(file.getOriginalFilename());
+        uploadFileResponseDTO.setFileDownloadUri(fileDownloadUri);
+        return uploadFileResponseDTO;
+    }
+
     @PostMapping(value = "/uploadfiles")
     @Override
     public List<UploadFileResponseDTO> uploadFiles(List<MultipartFile> files) {

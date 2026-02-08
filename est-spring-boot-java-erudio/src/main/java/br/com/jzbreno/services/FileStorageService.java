@@ -4,7 +4,6 @@ import br.com.jzbreno.Exceptions.FileStorageException;
 import br.com.jzbreno.config.FileStorageConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +17,7 @@ import java.text.MessageFormat;
 @Service
 public class FileStorageService {
 
-    private final Path fileStorageService;
+    private final Path fileStoragePath;
     private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
 
 
@@ -26,7 +25,7 @@ public class FileStorageService {
 
         Path path = Paths.get(fileStorageConfig.getUploadDir()).toAbsolutePath();
 
-        this.fileStorageService = path;
+        this.fileStoragePath = path;
 
         try {
             if (!Files.exists(path)) {
@@ -49,7 +48,7 @@ public class FileStorageService {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
             logger.info("Criando e Salvando arquivo {}", fileName);
-            Path targetLocation = this.fileStorageService.resolve(fileName);
+            Path targetLocation = this.fileStoragePath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             logger.info("File {} copiado com sucesso!", fileName);
             return file.getOriginalFilename();

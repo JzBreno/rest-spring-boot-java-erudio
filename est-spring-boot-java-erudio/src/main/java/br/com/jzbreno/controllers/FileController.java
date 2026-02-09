@@ -2,19 +2,24 @@ package br.com.jzbreno.controllers;
 
 import br.com.jzbreno.model.DTO.UploadFileResponseDTO;
 import br.com.jzbreno.services.FileStorageService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,9 +48,25 @@ public class FileController implements FIleControllerDocs{
         return multipartFiles.stream().map(this::uploadFile).toList();
     }
 
+    @GetMapping("/downloadfile/{fileName:.+}")
     @Override
-    public ResponseEntity<ResponseEntity> downloadFile(String fileName, HttpServletResponse response) {
-        return null;
+    public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
+        Resource file = fileStorageService.loadFileAsResource(fileName);
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(file.getFile().getAbsolutePath());
+        } catch (Exception e) {
+            logger.error("Error during loading file {}", fileName, e);
+        }
+
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
     }
 
     private UploadFileResponseDTO generateResponse(MultipartFile file, UploadFileResponseDTO uploadFileResponseDTO) {

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController()
@@ -34,12 +36,24 @@ public class FileController implements FIleControllerDocs{
         return uploadFileResponseDTO;
     }
 
+    @PostMapping(value = "/uploadFiles")
+    @Override
+    public List<UploadFileResponseDTO> uploadFiles(@RequestParam("files") MultipartFile[] files) {
+        List<MultipartFile> multipartFiles = Arrays.asList(files);
+        return multipartFiles.stream().map(this::uploadFile).toList();
+    }
+
+    @Override
+    public ResponseEntity<ResponseEntity> downloadFile(String fileName, HttpServletResponse response) {
+        return null;
+    }
+
     private UploadFileResponseDTO generateResponse(MultipartFile file, UploadFileResponseDTO uploadFileResponseDTO) {
         // http://localhost:8080/api/files/v1/downloadfile/nomedoArquivo
         var fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath() //montando o caminho onde esta o arquivo para setar o download
-                        .path("/api/files/v1/downloadfile/")
-                        .path(file.getOriginalFilename())
-                        .toUriString();
+                .path("/api/files/v1/downloadfile/")
+                .path(file.getOriginalFilename())
+                .toUriString();
 
         uploadFileResponseDTO.setFileName(file.getOriginalFilename());
         uploadFileResponseDTO.setFileSize(file.getSize());
@@ -47,16 +61,5 @@ public class FileController implements FIleControllerDocs{
         uploadFileResponseDTO.setFileName(file.getOriginalFilename());
         uploadFileResponseDTO.setFileDownloadUri(fileDownloadUri);
         return uploadFileResponseDTO;
-    }
-
-    @PostMapping(value = "/uploadfiles")
-    @Override
-    public List<UploadFileResponseDTO> uploadFiles(List<MultipartFile> files) {
-        return List.of();
-    }
-
-    @Override
-    public ResponseEntity<ResponseEntity> downloadFile(String fileName, HttpServletResponse response) {
-        return null;
     }
 }

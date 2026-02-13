@@ -2,6 +2,7 @@ package br.com.jzbreno.controllers;
 
 import br.com.jzbreno.model.DTO.UploadFileResponseDTO;
 import br.com.jzbreno.services.FileStorageService;
+import br.com.jzbreno.services.FileStorageServiceV2;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,18 +18,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-@RestController()
-@RequestMapping("/api/files/v1")
-public class FileController implements FIleControllerDocs{
+@RestController
+@RequestMapping("/api/files/v2")
+public class fileControllerV2 implements FileControllerDocsV2 {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private FileStorageServiceV2 fileStorageServiceV2;
 
     @PostMapping(value = "/uploadFile")
     @Override
     public UploadFileResponseDTO uploadFile(@RequestParam("file") MultipartFile file) {
-        fileStorageService.storeFile(file);
+        fileStorageServiceV2.storeFile(file);
         UploadFileResponseDTO uploadFileResponseDTO = new UploadFileResponseDTO();
         uploadFileResponseDTO = generateResponse(file, uploadFileResponseDTO);
         return uploadFileResponseDTO;
@@ -44,7 +47,7 @@ public class FileController implements FIleControllerDocs{
     @GetMapping("/downloadfile/{fileName:.+}")
     @Override
     public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
-        Resource file = fileStorageService.loadFileAsResource(fileName);
+        Resource file = fileStorageServiceV2.loadFileAsResource(fileName);
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(file.getFile().getAbsolutePath());
@@ -76,4 +79,5 @@ public class FileController implements FIleControllerDocs{
         uploadFileResponseDTO.setFileDownloadUri(fileDownloadUri);
         return uploadFileResponseDTO;
     }
+
 }

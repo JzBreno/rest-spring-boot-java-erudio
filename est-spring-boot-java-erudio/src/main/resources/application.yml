@@ -28,6 +28,12 @@ spring:
 # CONFIGURAÇÕES FORA DO BLOCO SPRING
 file:
   upload-dir: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload
+  upload-dir-txt: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Txt
+  upload-dir-pdf: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Pdf
+  upload-dir-video: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Videos
+  upload-dir-song: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Song
+  upload-dir-Other: /Users/jzbre/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Other
+
 
 logging:
   level:

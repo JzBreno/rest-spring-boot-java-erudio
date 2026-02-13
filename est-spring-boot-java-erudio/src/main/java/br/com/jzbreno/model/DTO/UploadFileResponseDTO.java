@@ -1,8 +1,11 @@
 package br.com.jzbreno.model.DTO;
 
+import org.springframework.hateoas.server.core.Relation;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Relation(value = "FileStoreDocs")
 public class UploadFileResponseDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

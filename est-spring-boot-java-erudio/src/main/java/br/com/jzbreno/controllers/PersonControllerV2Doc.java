@@ -130,7 +130,7 @@ public interface PersonControllerV2Doc {
                                                                                @RequestParam(value = "size", defaultValue = "15") Integer size,
                                                                                @RequestParam(value = "direction", defaultValue = "asc") String direction,
                                                                                @RequestParam(value = "properties", defaultValue = "firstName") String properties,
-                                                                               @PathVariable(name = "name") String firstName );
+                                                                               @PathVariable(name = "name") String firstName);
 
         @Operation(
             summary = "Create a new Person",

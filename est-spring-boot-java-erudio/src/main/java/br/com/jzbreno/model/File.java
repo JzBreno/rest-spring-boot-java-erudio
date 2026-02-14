@@ -5,14 +5,17 @@ import lombok.Data;
 
 import java.io.Serializable;
 @Entity
+@Table(name = "files")
 @Data
 public class File implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(name="path",nullable = false)
     private String path;
-    @Column(nullable = false)
+    @Column(name="filesize",nullable = false)
     private Long fileSize;
+    @Column(name="filename",nullable = false)
+    private String fileName;
 
 }

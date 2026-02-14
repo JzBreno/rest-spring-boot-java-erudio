@@ -3,6 +3,8 @@ package br.com.jzbreno.services;
 import br.com.jzbreno.Exceptions.FileNotFoundException;
 import br.com.jzbreno.Exceptions.FileStorageException;
 import br.com.jzbreno.config.FileStorageConfig;
+import br.com.jzbreno.model.File;
+import br.com.jzbreno.repository.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -30,10 +32,11 @@ public class FileStorageServiceV2 {
     private final Path pathOther;
 
     private static final Logger logger = LoggerFactory.getLogger(FileStorageServiceV2.class);
+    private final FileRepository fileRepository;
 
+    public FileStorageServiceV2(FileStorageConfig fileStorageConfig, FileRepository fileRepository) {
 
-    public FileStorageServiceV2(FileStorageConfig fileStorageConfig) {
-
+        this.fileRepository = fileRepository;
         this.pathDefault = resolvePath(fileStorageConfig.getUploadDir());
         this.pathPdf = resolvePath(fileStorageConfig.getUploadDirPdf());
         this.pathVideo = resolvePath(fileStorageConfig.getUploadDirVideo());
@@ -55,6 +58,11 @@ public class FileStorageServiceV2 {
             }
             logger.info("Criando e Salvando arquivo {}", fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            File filePath = new File();
+            filePath.setFileName(fileName);
+            filePath.setPath(targetLocation.toString());
+            filePath.setFileSize(file.getSize());
+            fileRepository.save(filePath);
             return file.getOriginalFilename();
         }catch (Exception e) {
             logger.error("Erro ao criar o arquivo {}", e.getMessage());

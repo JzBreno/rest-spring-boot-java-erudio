@@ -101,10 +101,38 @@ public interface PersonControllerV2Doc {
     )
     ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findAllV2(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                  @RequestParam(name = "size", defaultValue = "15") Integer size,
-                                                                 @RequestParam(name = "direction", defaultValue = "firstName") String direction,
-                                                                 @RequestParam(name = "sort", defaultValue = "asc") String properties);
-
+                                                                 @RequestParam(name = "direction", defaultValue = "asc") String direction,
+                                                                 @RequestParam(name = "sort", defaultValue = "firstName") String properties);
     @Operation(
+            summary = "Find a list of All Person in Database",
+            description = "Find a list of All Person in Database",
+            tags = {"People"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success - Person found",
+                            responseCode = "200",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class)))
+                            }),
+                    @ApiResponse(
+                            description = "Not Found - The person with the provided ID does not exist.",
+                            responseCode = "404",
+                            content = @Content),
+                    @ApiResponse(
+                            description = "Bad Request - The provided ID is invalid or malformed.",
+                            responseCode = "400",
+                            content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
+            }
+    )
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findPersonByName(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                                               @RequestParam(value = "size", defaultValue = "15") Integer size,
+                                                                               @RequestParam(value = "direction", defaultValue = "asc") String direction,
+                                                                               @RequestParam(value = "properties", defaultValue = "firstName") String properties,
+                                                                               @PathVariable(name = "name") String firstName );
+
+        @Operation(
             summary = "Create a new Person",
             description = "Creates a new person in the database with the provided information. Returns the created person with the generated ID.",
             tags = {"People"},

@@ -1,6 +1,8 @@
 package br.com.jzbreno.Exceptions.handler;
 
-import br.com.jzbreno.Exceptions.*;
+import br.com.jzbreno.Exceptions.ExceptionResponse;
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
+import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,26 +58,6 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
                 request.getDescription(false));
         log.warn("Exception: {}", response);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-
-    };
-    //usando a anotacao ExceptionHadler captura todas exceptions do nosso projeto com esse tipo
-    @ExceptionHandler(FileNotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleFileNotFoundException(Exception ex, WebRequest request){
-        ExceptionResponse response = new ExceptionResponse(new Date(),
-                ex.getMessage(),
-                request.getDescription(false));
-        log.warn("Exception: {}", response);
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-
-    };
-
-    @ExceptionHandler(FileStorageException.class)
-    public final ResponseEntity<ExceptionResponse> handleFileStorageException(Exception ex, WebRequest request){
-        ExceptionResponse response = new ExceptionResponse(new Date(),
-                ex.getMessage(),
-                request.getDescription(false));
-        log.warn("Exception: {}", response);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
     };
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FileImporter {
 
-    Boolean canHandle(String name);
+    boolean canHandle(String name);
     List<PersonDTO> importFile(InputStream stream) throws Exception;
 
 }

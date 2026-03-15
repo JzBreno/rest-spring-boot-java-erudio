@@ -28,7 +28,7 @@ public class FileImporterFactory {
     }
 
 
-    public FileImporter getFileImporterEnd(String fileName) throws BadRequestException {
+    public FileImporter getFileImporter(String fileName) throws BadRequestException {
         logger.debug("Iniciando getFileImporterEnd de FileImporterFactory");
         return fileImporters.stream()
                 .filter(importer -> importer.canHandle(fileName))

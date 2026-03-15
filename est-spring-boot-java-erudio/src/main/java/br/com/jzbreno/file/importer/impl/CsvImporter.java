@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class CsvImporter implements FileImporter {
     @Override
-    public Boolean canHandle(String name) {
+    public boolean canHandle(String name) {
         return name.endsWith(".csv");
     }
 

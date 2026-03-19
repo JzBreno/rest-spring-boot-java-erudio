@@ -62,13 +62,7 @@ public class PersonServices {
             return dto;
         });
 
-        Link findAllLink = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(PersonController.class)
-                                .findAll(pageable.getPageNumber(),
-                                        pageable.getPageSize(),
-                                        String.valueOf(pageable.getSort()),
-                                        "firstName"
-                        )).withSelfRel();
+        Link findAllLink = getAllLinks(pageable);
 
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
@@ -85,13 +79,7 @@ public class PersonServices {
             return dto;
         });
 
-        Link findAllLink = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(PersonController.class)
-                                .findAll(pageable.getPageNumber(),
-                                        pageable.getPageSize(),
-                                        String.valueOf(pageable.getSort()),
-                                        "firstName"
-                        )).withSelfRel();
+        Link findAllLink = getAllLinks(pageable);
 
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
@@ -166,4 +154,14 @@ public class PersonServices {
 
     }
 
+    private static Link getAllLinks(Pageable pageable) {
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonController.class)
+                        .findAll(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort()),
+                                "firstName"
+                        )).withSelfRel();
+        return findAllLink;
+    }
 }

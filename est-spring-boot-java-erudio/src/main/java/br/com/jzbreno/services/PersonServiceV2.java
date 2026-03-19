@@ -72,13 +72,7 @@ public class PersonServiceV2 {
         });
 
         //adicionado HAL
-        Link findAllLink = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(PersonControllerV2.class)
-                        .findAllV2(pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                String.valueOf(pageable.getSort()),
-                                "firstName")
-        ).withSelfRel();
+        Link findAllLink = getLinks(pageable);
 
 
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
@@ -96,13 +90,7 @@ public class PersonServiceV2 {
         });
 
         //adicionado HAL
-        Link findAllLink = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(PersonControllerV2.class)
-                        .findAllV2(pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                String.valueOf(pageable.getSort()),
-                                "firstName")
-        ).withSelfRel();
+        Link findAllLink = getLinks(pageable);
 
 
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
@@ -135,6 +123,10 @@ public class PersonServiceV2 {
         Link findById = linkTo(
                 methodOn(PersonControllerV2.class).findByIdV2(person.getId().toString())
         ).withRel("findById");
+        Link findByName = linkTo(
+                methodOn(PersonControllerV2.class).findPersonByName(0,1, "asc", "FirstName", person.getFirstName())
+        ).withRel("findPersonByName");
+
         Link findAll = linkTo(
                 methodOn(PersonControllerV2.class).findAllV2(0, 1, "asc", "FirstName" )
         ).withRel("findAll");
@@ -175,6 +167,7 @@ public class PersonServiceV2 {
     private static void implementsHateoasPerson(PersonDTO2 personDTO) {
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).findByIdV2(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).findAllV2(0, 15, "asc", "firstName")).withRel("findAll").withType("GET"));
+        personDTO.add(linkTo(methodOn(PersonControllerV2.class).findPersonByName(0, 15, "asc", "firstName", personDTO.getFirstName())).withRel("findPersonByName").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).createV2(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonControllerV2.class).update(personDTO)).withRel("update").withType("PUT"));
@@ -190,6 +183,17 @@ public class PersonServiceV2 {
             personDTO.add(linkTo(methodOn(PersonControllerV2.class).update(personDTO)).withRel("update").withType("PUT"));
         }
 
+    }
+
+    private static Link getLinks(Pageable pageable) {
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonControllerV2.class)
+                        .findAllV2(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort()),
+                                "firstName")
+        ).withSelfRel();
+        return findAllLink;
     }
 
 }

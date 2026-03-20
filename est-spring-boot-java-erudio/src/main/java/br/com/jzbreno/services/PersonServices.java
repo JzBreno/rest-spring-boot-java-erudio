@@ -174,6 +174,7 @@ public class PersonServices {
         personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15, "asc", "firstName")).withRel("findAll").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
         personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
+        personDTO.add(linkTo(methodOn(PersonController.class)).slash("massCreate").withRel("MassCreate").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
         personDTO.add(linkTo(methodOn(PersonController.class).disablePersonById(String.valueOf(personDTO.getId()))).withRel("disablePersonId").withType("PATCH"));
 
@@ -182,6 +183,7 @@ public class PersonServices {
     private static void implementsHateoasPerson(List<PersonDTO> personDTOList) {
         for (PersonDTO personDTO : personDTOList) {
             personDTO.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));
+            personDTO.add(linkTo(methodOn(PersonController.class)).slash("massCreate").withRel("MassCreate").withType("POST"));
             personDTO.add(linkTo(methodOn(PersonController.class).findAll(1, 15,"asc","firstName")).withRel("findAll").withType("GET"));
             personDTO.add(linkTo(methodOn(PersonController.class).deleteById(String.valueOf(personDTO.getId()))).withRel("deleteById").withType("DELETE"));
             personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));

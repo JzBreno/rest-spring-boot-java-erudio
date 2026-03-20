@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.mapper.PersonMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
@@ -22,6 +23,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -128,7 +130,45 @@ public class PersonController{
 
         if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
-    }//adicionado informacoes no request
+    }    //adicionado informacoes no request
+    @PostMapping(value = "/v1/massCreate",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE})
+    @Operation(
+            summary = "Insert a list of Person in Database",
+            description = "Insert a list of Person in Database using types of documents XLSX OR CSV",
+            tags = {"People","File"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success - Person found",
+                            responseCode = "200",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class)))
+                            }),
+                    @ApiResponse(
+                            description = "Not Found - The person with the provided ID does not exist.",
+                            responseCode = "404",
+                            content = @Content),
+                    @ApiResponse(
+                            description = "Bad Request - The provided ID is invalid or malformed.",
+                            responseCode = "400",
+                            content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
+            }
+    )
+    public List<PersonDTO> massiveCreatePeople( @RequestParam("file") MultipartFile file) throws Exception {
+        if (file.isEmpty()) throw new RequiredObjectIsNullException("File cannot be empty");
+        List<PersonDTO> people = personServices.massCreation(file);
+
+        if (people.isEmpty()) return (List<PersonDTO>) ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(people).getBody();
+    }
+
+
+    //adicionado informacoes no request
     @GetMapping(value = "/v1/findByName/{name}",
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(

@@ -107,7 +107,7 @@ public class PersonServices {
         return person;
     }
 
-    public List<PersonDTO> massCreation(MultipartFile file) throws Exception {
+    public List<PersonDTO> massCreation(MultipartFile file){
         log.info("Mass creation of people");
         if(file.isEmpty()) throw new RequiredObjectIsNullException();
 

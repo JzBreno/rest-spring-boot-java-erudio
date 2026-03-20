@@ -137,34 +137,46 @@ public class PersonController{
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE})
     @Operation(
-            summary = "Insert a list of Person in Database",
-            description = "Insert a list of Person in Database using types of documents XLSX OR CSV",
-            tags = {"People","File"},
+            summary = "Insert a list of People in Database",
+            description = "Process an XLSX or CSV file to insert multiple Person records into the database at once.",
+            tags = {"People", "File"},
             responses = {
                     @ApiResponse(
-                            description = "Success - Person found",
+                            description = "Success - Records created successfully",
                             responseCode = "200",
                             content = {
-                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class)))
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class)))
                             }),
                     @ApiResponse(
-                            description = "Not Found - The person with the provided ID does not exist.",
-                            responseCode = "404",
-                            content = @Content),
-                    @ApiResponse(
-                            description = "Bad Request - The provided ID is invalid or malformed.",
+                            description = "Bad Request - The uploaded file is empty or the format is unsupported.",
                             responseCode = "400",
                             content = @Content),
-                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
-                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
+                    @ApiResponse(
+                            description = "Unauthorized - Authentication is required to access this endpoint.",
+                            responseCode = "401",
+                            content = @Content),
+                    @ApiResponse(
+                            description = "Unprocessable Entity - The file structure is correct, but the data is invalid (e.g., column length exceeded).",
+                            responseCode = "422",
+                            content = @Content),
+                    @ApiResponse(
+                            description = "Internal Server Error - An unexpected error occurred while processing the file.",
+                            responseCode = "500",
+                            content = @Content),
             }
     )
-    public List<PersonDTO> massiveCreatePeople( @RequestParam("file") MultipartFile file) throws Exception {
+    public List<PersonDTO> massiveCreatePeople(@RequestParam("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) throw new RequiredObjectIsNullException("File cannot be empty");
+
         List<PersonDTO> people = personServices.massCreation(file);
 
-        if (people.isEmpty()) return (List<PersonDTO>) ResponseEntity.noContent().build();
-        return ResponseEntity.ok().body(people).getBody();
+        // Se a lista estiver vazia, o retorno ideal é 204 No Content
+        if (people.isEmpty()) {
+            return (List<PersonDTO>) ResponseEntity.noContent().build().getBody();
+        }
+
+        return ResponseEntity.ok(people).getBody();
     }
 
 

@@ -1,13 +1,17 @@
 package br.com.jzbreno.services;
 
+import br.com.jzbreno.Exceptions.FileStorageException;
 import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.controllers.PersonController;
+import br.com.jzbreno.file.importer.contract.FileImporter;
+import br.com.jzbreno.file.importer.factory.FileImporterFactory;
 import br.com.jzbreno.mapper.ObjectMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +23,12 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -36,6 +44,9 @@ public class PersonServices {
     private final PersonRepository personRepository;
     @Autowired
     PagedResourcesAssembler<PersonDTO> pagedResourcesAssembler;
+
+    @Autowired
+    FileImporterFactory importer;
 
     public PersonServices(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -96,7 +107,31 @@ public class PersonServices {
         return person;
     }
 
+    public List<PersonDTO> massCreation(MultipartFile file) throws Exception {
+        log.info("Mass creation of people");
+        if(file.isEmpty()) throw new RequiredObjectIsNullException();
 
+        try(InputStream inputStream = file.getInputStream()){
+            String fileName = Optional.ofNullable(file.getOriginalFilename())
+                    .orElseThrow(() -> new BadRequestException("File name cannont be null"));
+            FileImporter importer = this.importer.getFileImporter(fileName);
+            //cria as entidades e utiliza o .stream para percorrer e modificar com o .map e ja salvar no banco chamando o repository e retorna uma lista
+            List<Person> entities = importer.importFile(inputStream)
+                    .stream().map(dto -> personRepository.save(ObjectMapper.parseObject(dto, Person.class)))
+                    .toList();
+            //usando pipeline para retornar a lista de person como lista de DTO
+            return entities.stream()
+                    .map(entitie -> {
+                        var  dto = ObjectMapper.parseObject(entitie, PersonDTO.class);
+                        implementsHateoasPerson(dto);
+                        return dto;
+                    }).toList();
+
+        } catch (Exception e) {
+            throw new FileStorageException("Error while creating people", e);
+        }
+
+    }
 
     public PersonDTO updating(PersonDTO person){
 
@@ -131,6 +166,8 @@ public class PersonServices {
         personRepository.deleteById(Long.parseLong(id));
         implementsHateoasPerson(findById(id));
     }
+
+
 
     private static void implementsHateoasPerson(PersonDTO personDTO) {
         personDTO.add(linkTo(methodOn(PersonController.class).findById(String.valueOf(personDTO.getId()))).withSelfRel().withType("GET"));

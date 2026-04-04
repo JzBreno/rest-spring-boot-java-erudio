@@ -7,15 +7,18 @@ import br.com.jzbreno.model.DTO.PersonDTO;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class XlsxExporter implements FileExporter {
@@ -30,53 +33,55 @@ public class XlsxExporter implements FileExporter {
 
     @Override
     public Resource exportFile(List<PersonDTO> people) throws Exception {
-        return null;
-    }
 
-    public List<PersonDTO> parseRecordsToPersonDTOList(Iterator<Row> rowIterator) {
-        List<PersonDTO> people = new ArrayList<>();
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            if (rowIsValid(row)) {
-                people.add(parseRowToPersonDTO(row));
+        try(Workbook workbook = new XSSFWorkbook()){
+            Sheet sheet = workbook.createSheet("People");
+
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {"ID","First Name","Last Name","Addres","Gender", "Enabled"};
+
+            for(int i =0 ; i < headers.length; i++){
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(createHeaderCellStyle(workbook));
             }
+
+            int rowIndex = 1;
+
+            GenerateListToRow(people, sheet, rowIndex);
+
+            for(int i =0; i< headers.length ; i++){
+                sheet.autoSizeColumn(i);
+            }
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
+            return new ByteArrayResource(outputStream.toByteArray());
         }
-        return people;
+
     }
 
-    private PersonDTO parseRowToPersonDTO(Row row) {
-        PersonDTO personDTO = new PersonDTO();
-
-        personDTO.setFirstName(formatter.formatCellValue(row.getCell(0)));
-        personDTO.setLastName(formatter.formatCellValue(row.getCell(1)));
-        personDTO.setBirthday(parseLocalDate(row.getCell(2)));
-        personDTO.setAddress(formatter.formatCellValue(row.getCell(3)));
-
-        String gender = formatter.formatCellValue(row.getCell(4)).trim();
-        personDTO.setGender(gender.length() > 6 ? gender.substring(0, 6) : gender);
-
-        String enabledStr = formatter.formatCellValue(row.getCell(5));
-        personDTO.setEnabled(enabledStr.equalsIgnoreCase("true") || enabledStr.equals("1"));
-
-        personDTO.setEmail(formatter.formatCellValue(row.getCell(6)));
-        personDTO.setPhoneNumber(formatter.formatCellValue(row.getCell(7)));
-
-        return personDTO;
-    }
-
-    private LocalDate parseLocalDate(Cell cell) {
-        if (cell == null || cell.getCellType() == CellType.BLANK) return null;
-        try {
-            if (DateUtil.isCellDateFormatted(cell)) {
-                return cell.getLocalDateTimeCellValue().toLocalDate();
-            }
-            return LocalDate.parse(formatter.formatCellValue(cell), dateFormatter);
-        } catch (Exception e) {
-            return null;
+    private static void GenerateListToRow(List<PersonDTO> people, Sheet sheet, int rowIndex) {
+        for(PersonDTO person : people){
+            Row row = sheet.createRow(rowIndex++);
+            row.createCell(0).setCellValue(person.getId());
+            row.createCell(1).setCellValue(person.getFirstName());
+            row.createCell(2).setCellValue(person.getLastName());
+            row.createCell(3).setCellValue(person.getAddress());
+            row.createCell(4).setCellValue(person.getGender());
+            row.createCell(5).setCellValue(person.getEnabled() != null && person.getEnabled() ? "Yes" : "No");
         }
     }
 
-    private static boolean rowIsValid(Row row) {
-        return row != null && row.getCell(0) != null && row.getCell(0).getCellType() != CellType.BLANK;
+    private CellStyle createHeaderCellStyle(Workbook workbook){
+
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);
+
+        return style;
     }
+
 }

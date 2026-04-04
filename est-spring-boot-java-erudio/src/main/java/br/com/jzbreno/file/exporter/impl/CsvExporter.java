@@ -27,6 +27,7 @@ public class CsvExporter implements FileExporter {
 
     @Override
     public Resource exportFile(List<PersonDTO> people) throws Exception {
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
 

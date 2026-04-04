@@ -106,7 +106,7 @@ public class PersonServices {
         implementsHateoasPerson(person);
         return person;
     }
-
+    //endpoint para inserir apartir de csv e xls
     public List<PersonDTO> massCreation(MultipartFile file){
         log.info("Mass creation of people");
         if(file.isEmpty()) throw new RequiredObjectIsNullException();
@@ -114,6 +114,7 @@ public class PersonServices {
         try(InputStream inputStream = file.getInputStream()){
             String fileName = Optional.ofNullable(file.getOriginalFilename())
                     .orElseThrow(() -> new BadRequestException("File name cannont be null"));
+            //ele busca o tipo de instancia de FileImporter que e o tipo de arquivo que e enviado, e retorna uma instancia de FileImporter
             FileImporter importer = this.importer.getFileImporter(fileName);
             //cria as entidades e utiliza o .stream para percorrer e modificar com o .map e ja salvar no banco chamando o repository e retorna uma lista
             List<Person> entities = importer.importFile(inputStream)

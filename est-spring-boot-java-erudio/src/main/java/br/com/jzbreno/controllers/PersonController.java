@@ -230,7 +230,6 @@ public class PersonController{
         String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
         Resource resource = personServices.generateExportPage(pageable, acceptHeader);
 
-        // Definindo contentType padrão caso o accept venha vazio ou com múltiplos valores
         var contentType = (acceptHeader != null && !acceptHeader.contains("*/*")) ? acceptHeader : MediaTypes.APPLICATION_XLSX_VALUE;
 
         var fileExtension = MediaTypes.APPLICATION_XLSX_VALUE.equalsIgnoreCase(contentType) ? ".xlsx" : ".csv";
@@ -238,7 +237,6 @@ public class PersonController{
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                // Corrigido: filename (com 'n')
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
     }

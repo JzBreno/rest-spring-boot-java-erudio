@@ -4,6 +4,9 @@ import br.com.jzbreno.Exceptions.FileStorageException;
 import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.controllers.PersonController;
+import br.com.jzbreno.file.exporter.MediaTypes;
+import br.com.jzbreno.file.exporter.contract.FileExporter;
+import br.com.jzbreno.file.exporter.factory.FileExporterFactory;
 import br.com.jzbreno.file.importer.contract.FileImporter;
 import br.com.jzbreno.file.importer.factory.FileImporterFactory;
 import br.com.jzbreno.mapper.ObjectMapper;
@@ -13,6 +16,7 @@ import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -48,6 +52,9 @@ public class PersonServices {
     @Autowired
     FileImporterFactory importer;
 
+    @Autowired
+    FileExporterFactory exporter;
+
     public PersonServices(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
@@ -77,6 +84,27 @@ public class PersonServices {
 
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
+
+    public Resource generateExportPage(Pageable pageable, String acceptHeader) throws Exception {
+        log.info("Exporting a peoplePage");
+
+        var people = personRepository.findAll(pageable).stream().map( p -> {
+            PersonDTO dto = new PersonDTO();
+            dto.setId(p.getId());
+            dto.setFirstName(p.getFirstName());
+            dto.setLastName(p.getLastName());
+            dto.setGender(p.getGender());
+            dto.setAddress(p.getAddress());
+            dto.setEnabled(p.getEnabled());
+            return dto;
+        }).toList();
+
+        FileExporter exporter = this.exporter.getFileExporter(acceptHeader);
+
+        return exporter.exportFile(people);
+    }
+
+
 
     public PagedModel<EntityModel<PersonDTO>> findPersonByName(String firstName, Pageable pageable){
         log.info("Finding all people");
@@ -177,6 +205,7 @@ public class PersonServices {
         personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class)).slash("massCreate").withRel("MassCreate").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
+        personDTO.add(linkTo(methodOn(PersonController.class).generateExportPage(1, 15, "asc", "firstName", MediaTypes.APPLICATION_XLSX_VALUE)).withRel("generateExportPage").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonController.class).disablePersonById(String.valueOf(personDTO.getId()))).withRel("disablePersonId").withType("PATCH"));
 
     }

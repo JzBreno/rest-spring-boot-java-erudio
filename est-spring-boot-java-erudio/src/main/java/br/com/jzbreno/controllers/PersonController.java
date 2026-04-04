@@ -1,6 +1,7 @@
 package br.com.jzbreno.controllers;
 
 import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
+import br.com.jzbreno.file.exporter.MediaTypes;
 import br.com.jzbreno.mapper.PersonMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
@@ -12,7 +13,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultLifecycleProcessor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +24,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.table.TableCellEditor;
 import java.util.List;
 
 @RestController
@@ -37,9 +43,11 @@ public class PersonController{
 //    assim seria a forma de injecao com anotacao, mas irei usar no construtor como boa pratica
 
     private final PersonServices personServices;
+    private final DefaultLifecycleProcessor defaultLifecycleProcessor;
 
-    public PersonController(PersonServices personServices, PersonMapper personMapper) {
+    public PersonController(PersonServices personServices, PersonMapper personMapper, DefaultLifecycleProcessor defaultLifecycleProcessor) {
         this.personServices = personServices;
+        this.defaultLifecycleProcessor = defaultLifecycleProcessor;
     }
 
     //adicionado informacoes no request
@@ -130,7 +138,9 @@ public class PersonController{
 
         if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(people);
-    }    //adicionado informacoes no request
+    }
+
+    //adicionado informacoes no request
     @PostMapping(value = "/v1/massCreate",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {MediaType.APPLICATION_JSON_VALUE,
@@ -177,6 +187,60 @@ public class PersonController{
         }
 
         return ResponseEntity.ok(people).getBody();
+    }
+
+    @GetMapping(value = "/v1/generateExportPage",
+            produces = {MediaTypes.APPLICATION_XLSX_VALUE, MediaTypes.TEXT_CSV_VALUE})
+    @Operation(
+            summary = "Exportar lista de pessoas",
+            description = "Gera um arquivo (XLSX ou CSV) contendo a lista de pessoas paginada e ordenada.",
+            tags = {"People"},
+            responses = {
+                    @ApiResponse(
+                            description = "Arquivo gerado com sucesso",
+                            responseCode = "200",
+                            content = {
+                                    @Content(mediaType = MediaTypes.APPLICATION_XLSX_VALUE, schema = @Schema(type = "string", format = "binary")),
+                                    @Content(mediaType = MediaTypes.TEXT_CSV_VALUE, schema = @Schema(type = "string", format = "binary"))
+                            }),
+                    @ApiResponse(description = "Requisição inválida", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Não autorizado", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Erro interno no servidor", responseCode = "500", content = @Content),
+            }
+    )
+    public ResponseEntity<Resource> generateExportPage(
+            @Parameter(description = "Número da página (0..N)")
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+
+            @Parameter(description = "Quantidade de registros por página")
+            @RequestParam(value = "size", defaultValue = "15") Integer size,
+
+            @Parameter(description = "Direção da ordenação (asc ou desc)")
+            @RequestParam(value = "direction", defaultValue = "asc") String direction,
+
+            @Parameter(description = "Atributo pelo qual ordenar")
+            @RequestParam(value = "properties", defaultValue = "firstName") String properties,
+
+            HttpServletRequest request
+    ) throws Exception {
+
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        Resource resource = personServices.generateExportPage(pageable, acceptHeader);
+
+        // Definindo contentType padrão caso o accept venha vazio ou com múltiplos valores
+        var contentType = (acceptHeader != null && !acceptHeader.contains("*/*")) ? acceptHeader : MediaTypes.APPLICATION_XLSX_VALUE;
+
+        var fileExtension = MediaTypes.APPLICATION_XLSX_VALUE.equalsIgnoreCase(contentType) ? ".xlsx" : ".csv";
+        var fileName = "people_exported_" + System.currentTimeMillis() + fileExtension;
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                // Corrigido: filename (com 'n')
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
     }
 
 

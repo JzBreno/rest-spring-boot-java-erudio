@@ -24,6 +24,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -205,7 +206,7 @@ public class PersonServices {
         personDTO.add(linkTo(methodOn(PersonController.class).createV1(personDTO)).withRel("createV1").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class)).slash("massCreate").withRel("MassCreate").withType("POST"));
         personDTO.add(linkTo(methodOn(PersonController.class).update(personDTO)).withRel("update").withType("PUT"));
-        personDTO.add(linkTo(methodOn(PersonController.class).generateExportPage(1, 15, "asc", "firstName", MediaTypes.APPLICATION_XLSX_VALUE)).withRel("generateExportPage").withType("GET"));
+//        personDTO.add(linkTo(methodOn(PersonController.class).generateExportPage(1, 15, "asc", "firstName", MediaType.APPLICATION_JSON_VALUE)).withRel("generateExportPage").withType("GET"));
         personDTO.add(linkTo(methodOn(PersonController.class).disablePersonById(String.valueOf(personDTO.getId()))).withRel("disablePersonId").withType("PATCH"));
 
     }

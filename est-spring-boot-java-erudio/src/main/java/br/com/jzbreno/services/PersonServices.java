@@ -158,7 +158,7 @@ public class PersonServices {
                     }).toList();
 
         } catch (Exception e) {
-            throw new FileStorageException("Error while creating people", e);
+            throw new FileStorageException("Error while creating people");
         }
 
     }

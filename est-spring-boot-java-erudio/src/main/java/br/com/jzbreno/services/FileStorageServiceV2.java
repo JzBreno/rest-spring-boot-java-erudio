@@ -1,6 +1,5 @@
 package br.com.jzbreno.services;
 
-import br.com.jzbreno.Exceptions.FileNotFoundException;
 import br.com.jzbreno.Exceptions.FileStorageException;
 import br.com.jzbreno.config.FileStorageConfig;
 import br.com.jzbreno.model.File;
@@ -66,7 +65,7 @@ public class FileStorageServiceV2 {
             return file.getOriginalFilename();
         }catch (Exception e) {
             logger.error("Erro ao criar o arquivo {}", e.getMessage());
-            throw new FileStorageException("Could not store file " + fileName + "!", e);
+            throw new FileStorageException("Could not store file " + fileName + "!");
         }
     }
 
@@ -82,11 +81,11 @@ public class FileStorageServiceV2 {
                 return resource;
             } else {
                 logger.error("File not found or not readable: {}", fileName);
-                throw new FileNotFoundException("File not found: " + fileName);
+                throw new FileStorageException("File not found: " + fileName);
             }
         } catch (Exception e) {
             logger.error("Critical error while loading file {}: ", fileName, e);
-            throw new FileNotFoundException("Could not load file " + fileName, e);
+            throw new FileStorageException("Could not load file " + fileName);
         }
     }
 
@@ -126,7 +125,7 @@ public class FileStorageServiceV2 {
                 }
             }
         } catch (IOException e) {
-            throw new FileStorageException("Erro ao inicializar a estrutura de pastas do sistema.", e);
+            throw new FileStorageException("Erro ao inicializar a estrutura de pastas do sistema.");
         }
     }
 

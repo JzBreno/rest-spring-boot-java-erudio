@@ -32,6 +32,7 @@
         <springdoc.version>2.7.0</springdoc.version>
         <apache.poi.version>5.5.1</apache.poi.version>
         <apache.commons.version>1.14.1</apache.commons.version>
+        <sf.jasperreports.version>7.0.4</sf.jasperreports.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -112,6 +113,24 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${sf.jasperreports.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>${sf.jasperreports.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-pdf</artifactId>
+            <version>${sf.jasperreports.version}</version>
+            <scope>compile</scope>
         </dependency>
 	</dependencies>
 

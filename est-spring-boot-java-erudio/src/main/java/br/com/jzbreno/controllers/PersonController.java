@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.table.TableCellEditor;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/person")
@@ -190,7 +190,10 @@ public class PersonController{
     }
 
     @GetMapping(value = "/v1/generateExportPage",
-            produces = {MediaTypes.APPLICATION_XLSX_VALUE, MediaTypes.TEXT_CSV_VALUE})
+            produces = {
+                        MediaTypes.APPLICATION_XLSX_VALUE,
+                        MediaTypes.TEXT_CSV_VALUE,
+                        MediaTypes.APPLICATION_PDF_VALUE})
     @Operation(
             summary = "Exportar lista de pessoas",
             description = "Gera um arquivo (XLSX ou CSV) contendo a lista de pessoas paginada e ordenada.",

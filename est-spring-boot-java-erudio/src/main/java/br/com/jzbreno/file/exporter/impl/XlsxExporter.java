@@ -23,8 +23,6 @@ import java.util.Optional;
 @Component
 public class XlsxExporter implements FileExporter {
 
-    private final DataFormatter formatter = new DataFormatter();
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Override
     public boolean canHandle(String acceptHeader) {

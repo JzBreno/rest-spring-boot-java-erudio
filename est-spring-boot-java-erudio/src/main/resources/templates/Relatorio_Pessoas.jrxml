@@ -1,0 +1,76 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Relatorio_JZB_Pessoas" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa385fd1-f5b5-4fed-b1f8-819cd2e5fe2d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="RowStyle" mode="Opaque" backcolor="#D4D4D4">
+		<conditionalStyle mode="Opaque" backcolor="#F4F7F9">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<query language="SQL"><![CDATA[]]></query>
+	<field name="id" class="java.lang.Long"/>
+	<field name="firstName" class="java.lang.String"/>
+	<field name="lastName" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="enabled" class="java.lang.Boolean"/>
+	<background splitType="Stretch"/>
+	<title height="50">
+		<element kind="staticText" uuid="f669d1bc-b3d8-44c5-9e11-4f303816754d" mode="Opaque" x="0" y="10" width="555" height="40" forecolor="#FFFFFF" backcolor="#1A3C5A">
+			<text><![CDATA[RELATÓRIO DE PESSOAS CADASTRADAS]]></text>
+		</element>
+	</title>
+	<columnHeader height="30">
+		<element kind="staticText" uuid="46a55814-c7b3-4517-ad7b-3aeba6e87a09" mode="Opaque" x="0" y="0" width="60" height="30" forecolor="#FFFFFF" backcolor="#4AB3A2">
+			<text><![CDATA[ID]]></text>
+		</element>
+		<element kind="staticText" uuid="139e6285-f7b1-4603-9e86-657c3c232cf0" mode="Opaque" x="60" y="0" width="160" height="30" forecolor="#FFFFFF" backcolor="#4AB3A2">
+			<text><![CDATA[NOME COMPLETO]]></text>
+		</element>
+		<element kind="staticText" uuid="a0494b0b-9c4a-4892-96ad-001082773476" mode="Opaque" x="220" y="0" width="130" height="30" forecolor="#FFFFFF" backcolor="#4AB3A2">
+			<text><![CDATA[ENDEREÇO]]></text>
+		</element>
+		<element kind="staticText" uuid="1edc47ac-0952-4fc8-a045-aee5b47c368c" mode="Opaque" x="350" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#4AB3A2">
+			<text><![CDATA[GÊNERO]]></text>
+		</element>
+		<element kind="staticText" uuid="020f1f35-e382-4677-b279-fd14d36dee96" mode="Opaque" x="450" y="0" width="105" height="30" forecolor="#FFFFFF" backcolor="#4AB3A2">
+			<text><![CDATA[STATUS]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30">
+			<element kind="textField" uuid="1e9df005-f5f9-4514-9949-29b64749f75e" x="0" y="0" width="60" height="30" style="RowStyle">
+				<expression><![CDATA[$F{id}]]></expression>
+			</element>
+			<element kind="textField" uuid="eb365d6b-ad93-4634-9c98-f01666aac34e" x="60" y="0" width="160" height="30" style="RowStyle">
+				<expression><![CDATA[
+($F{firstName} == null ? "" : $F{firstName}) + " " +
+($F{lastName} == null ? "" : $F{lastName})
+                ]]></expression>
+			</element>
+			<element kind="textField" uuid="d708e536-0be5-495d-956a-dd8bb132def6" x="220" y="0" width="130" height="30" style="RowStyle">
+				<expression><![CDATA[$F{address}]]></expression>
+			</element>
+			<element kind="textField" uuid="c4e4c32e-e8c1-4b43-b274-b9f5abcb51ed" x="350" y="0" width="100" height="30" style="RowStyle">
+				<expression><![CDATA[$F{gender}]]></expression>
+			</element>
+			<element kind="textField" uuid="ab663966-7b12-4459-a601-2fbe363a61c7" x="450" y="0" width="105" height="30" style="RowStyle">
+				<expression><![CDATA[
+$F{enabled} != null && $F{enabled} ? "Ativo" : "Inativo"
+                ]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="40">
+		<element kind="textField" uuid="ae82436c-7b0c-4e1a-b4f5-529001736f72" x="0" y="0" width="150" height="20">
+			<expression><![CDATA["TOTAL: " + $V{REPORT_COUNT}]]></expression>
+		</element>
+		<element kind="textField" uuid="c85956c2-f3cb-4fc2-93ef-d64ddef9d564" x="350" y="0" width="100" height="20">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="2a8c7606-4222-4a24-8851-d4272696be22" x="450" y="0" width="100" height="20">
+			<expression><![CDATA[" of " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="50"/>
+</jasperReport>

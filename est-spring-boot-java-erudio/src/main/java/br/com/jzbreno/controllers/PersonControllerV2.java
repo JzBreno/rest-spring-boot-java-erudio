@@ -1,6 +1,5 @@
 package br.com.jzbreno.controllers;
 
-import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/person/v2")
-@Tag(name = "API REST Person Version 2", description = "Enpoint for managing Persons, version 2 with Content Negotiation and Others tecnologies")
+@Tag(name = "API REST Person Version 2")
 public class PersonControllerV2 implements PersonControllerV2Doc {
 
     private final PersonServiceV2 personServices;
@@ -26,71 +25,73 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
         this.personServices = personServices;
     }
 
-    //adicionado informacoes no request
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<EntityModel<PersonDTO2>> findByIdV2(@PathVariable(name = "id") String id){
+    public ResponseEntity<EntityModel<PersonDTO2>> findByIdV2(@PathVariable(name = "id") String id) {
         EntityModel<PersonDTO2> person = personServices.findByIdV2(id);
-        if(person != null) return ResponseEntity.ok().body(person);
-        else return ResponseEntity.notFound().build();
+        return (person != null) ? ResponseEntity.ok(person) : ResponseEntity.notFound().build();
     }
 
-    //adicionado informacoes no request
     @GetMapping(value = "/findAll",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findAllV2(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                                         @RequestParam(name = "size", defaultValue = "15") Integer size,
-                                                                         @RequestParam(name = "direction", defaultValue = "asc") String direction,
-                                                                         @RequestParam(name = "properties", defaultValue = "firstName") String properties){
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findAllV2(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "15") Integer size,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "sort", defaultValue = "firstName") String properties) {
 
-        Sort.Direction sortDirection = "desc".equalsIgnoreCase(properties) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageableValue = PageRequest.of(page, size, Sort.by(sortDirection, properties));
-        PagedModel<EntityModel<PersonDTO2>> people = personServices.findAllV2(pageableValue);
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+        PagedModel<EntityModel<PersonDTO2>> people = personServices.findAllV2(pageable);
 
-        if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok().body(people);
+        return people.getContent().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(people);
     }
 
-    @GetMapping(value = "/findbyname/{name}")
+    @GetMapping(value = "/findbyname/{firstName}", // Corrigido erro de digitação: firtName -> firstName
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findPersonByName(Integer page, Integer size, String direction, String properties, String firstName) {
-        Sort.Direction sortDirection = "desc".equalsIgnoreCase(properties) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageableValue = PageRequest.of(page, size, Sort.by(sortDirection, properties));
-        PagedModel<EntityModel<PersonDTO2>> people = personServices.findbyFirstName(firstName, pageableValue);
+    public ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findPersonByName(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "15") Integer size,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "properties", defaultValue = "firstName") String properties,
+            @PathVariable(name = "firstName") String firstName) { // Adicionado anotações explicitamente
 
-        if (people.getContent().isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok().body(people);
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+
+        PagedModel<EntityModel<PersonDTO2>> people = personServices.findbyFirstName(firstName, pageable);
+
+        return people.getContent().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(people);
     }
 
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person){
-        EntityModel<PersonDTO2> createdPerson = personServices.createV2(person);
-        return ResponseEntity.ok().body(createdPerson);
+    public ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person) {
+        return ResponseEntity.ok(personServices.createV2(person));
     }
 
     @PutMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
-    public ResponseEntity<PersonDTO2> update(@RequestBody PersonDTO2 person){
-        return ResponseEntity.ok().body(personServices.updating(person));
+    public ResponseEntity<PersonDTO2> update(@RequestBody PersonDTO2 person) {
+        return ResponseEntity.ok(personServices.updating(person));
     }
 
     @DeleteMapping(value = "/{id}")
     @Override
-    public ResponseEntity<Void> deleteById(@PathVariable(name = "id") String id){
+    public ResponseEntity<Void> deleteById(@PathVariable(name = "id") String id) {
         personServices.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public void teste(){
+    public void teste() {
         log.debug("Testando o logback");
     }
-
 }

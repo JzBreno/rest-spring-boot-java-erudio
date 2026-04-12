@@ -1,7 +1,10 @@
 package br.com.jzbreno.services;
 
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.controllers.PersonControllerV2;
+import br.com.jzbreno.file.importer.contract.FileImporter;
+import br.com.jzbreno.file.importer.factory.FileImporterFactory;
 import br.com.jzbreno.mapper.ObjectMapper;
 import br.com.jzbreno.mapper.PersonMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
@@ -9,6 +12,7 @@ import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +24,14 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -37,6 +45,9 @@ public class PersonServiceV2 {
 //    necessario para mappear o objeto com links HAL
     @Autowired
     private PagedResourcesAssembler<PersonDTO2> pagedResourcesAssembler;
+
+    @Autowired
+    FileImporterFactory importer;
 
     public PersonServiceV2(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -96,54 +107,71 @@ public class PersonServiceV2 {
         return pagedResourcesAssembler.toModel(peopleWithLinks, findAllLink);
     }
 
-    public EntityModel<PersonDTO2> createV2(@NonNull PersonDTO2 personDTO){ // Renomeei para personDTO para clareza
+    public EntityModel<PersonDTO2> createV2(@NonNull PersonDTO2 personDTO){
         log.info("Creating person : " + personDTO.toString());
 
-        // 1. Converte DTO -> Entity
         Person entity = personMapper.parseDT0V2Person(personDTO);
 
-        // 2. Salva e CAPTURA o retorno (aqui está o ID gerado!)
         Person savedEntity = personRepository.save(entity);
 
-        // 3. Atualiza o DTO com o ID que veio do banco
         personDTO.setId(savedEntity.getId());
 
-        // 4. Gera os links
         implementsHateoasPerson(personDTO);
         List<Link> selfLink = generateHAL(personDTO);
 
         return EntityModel.of(personDTO, selfLink);
     }
 
-    private List<Link> generateHAL(PersonDTO2 person) {
-        List<Link> links = new ArrayList<>();
-        Link self = linkTo(
-                methodOn(PersonControllerV2.class).createV2(person)
-        ).withSelfRel().withType("create");
-        Link findById = linkTo(
-                methodOn(PersonControllerV2.class).findByIdV2(person.getId().toString())
-        ).withRel("findById");
-        Link findByName = linkTo(
-                methodOn(PersonControllerV2.class).findPersonByName(0,1, "asc", "FirstName", person.getFirstName())
-        ).withRel("findPersonByName");
+    public List<PersonDTO2> massiveCreation(MultipartFile file) {
 
-        Link findAll = linkTo(
-                methodOn(PersonControllerV2.class).findAllV2(0, 1, "asc", "FirstName" )
-        ).withRel("findAll");
-        Link delete = linkTo(
-                methodOn(PersonControllerV2.class).deleteById(person.getId().toString())
-        ).withRel("delete");
-        Link update = linkTo(
-                methodOn(PersonControllerV2.class).update(person)
-        ).withRel("update");
+        log.info("Starting massive processing. File: [{}], Size: [{} bytes]",
+                file.getOriginalFilename(), file.getSize());
 
-        links.add(self);
-        links.add(findById);
-        links.add(findAll);
-        links.add(delete);
-        links.add(update);
-        return links;
+        if (file.isEmpty()) {
+            log.warn("Upload attempt with an empty file. Filename: [{}]", file.getOriginalFilename());
+            throw new RequiredObjectIsNullException("Object is Null, Please insert a valid object!");
+        }
+
+        long startTime = System.currentTimeMillis();
+
+        try (InputStream inputStream = file.getInputStream()) {
+            String fileName = file.getOriginalFilename();
+
+            log.debug("Searching for suitable importer for file: {}", fileName);
+            FileImporter importer = this.importer.getFileImporter(fileName);
+
+            log.info("Extracting data using {}", importer.getClass().getSimpleName());
+            var rawDtos = importer.importFile(inputStream);
+
+            log.info("Total records identified in file: {}", rawDtos.size());
+
+            List<Person> listImported = rawDtos.stream()
+                    .map(dto -> {
+                        var entity = personRepository.save(ObjectMapper.parseObject(dto, Person.class));
+                        // Trace is used for high-volume logs to avoid cluttering standard info logs
+                        log.trace("Person entity saved with ID: {}", entity.getId());
+                        return entity;
+                    })
+                    .toList();
+
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("Massive creation finished successfully. Records processed: {}. Total time: {}ms",
+                    listImported.size(), duration);
+
+            return listImported.stream()
+                    .map(person -> {
+                        var dto = personMapper.parsePersonDTOV2(person);
+                        implementsHateoasPerson(dto);
+                        return dto;
+                    }).toList();
+
+        } catch (Exception e) {
+            log.error("Critical failure during massive processing of file [{}]. Reason: {}",
+                    file.getOriginalFilename(), e.getMessage(), e);
+            throw new RuntimeException("Error processing massive creation", e);
+        }
     }
+
 
     public PersonDTO2 updating(PersonDTO2 person){
         log.info("Updating person : " + person.toString() );
@@ -195,5 +223,36 @@ public class PersonServiceV2 {
         ).withSelfRel();
         return findAllLink;
     }
+
+    private List<Link> generateHAL(PersonDTO2 person) {
+        List<Link> links = new ArrayList<>();
+        Link self = linkTo(
+                methodOn(PersonControllerV2.class).createV2(person)
+        ).withSelfRel().withType("create");
+        Link findById = linkTo(
+                methodOn(PersonControllerV2.class).findByIdV2(person.getId().toString())
+        ).withRel("findById");
+        Link findByName = linkTo(
+                methodOn(PersonControllerV2.class).findPersonByName(0,1, "asc", "FirstName", person.getFirstName())
+        ).withRel("findPersonByName");
+
+        Link findAll = linkTo(
+                methodOn(PersonControllerV2.class).findAllV2(0, 1, "asc", "FirstName" )
+        ).withRel("findAll");
+        Link delete = linkTo(
+                methodOn(PersonControllerV2.class).deleteById(person.getId().toString())
+        ).withRel("delete");
+        Link update = linkTo(
+                methodOn(PersonControllerV2.class).update(person)
+        ).withRel("update");
+
+        links.add(self);
+        links.add(findById);
+        links.add(findAll);
+        links.add(delete);
+        links.add(update);
+        return links;
+    }
+
 
 }

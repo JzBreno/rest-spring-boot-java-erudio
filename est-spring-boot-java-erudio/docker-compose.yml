@@ -1,0 +1,28 @@
+services:
+  backend:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: rest-erudio
+    ports:
+      - "8080:8080"
+    volumes:
+      - "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/deploy/backend:/app"
+      # Usando volume nomeado para evitar erro de permissão no Windows/OneDrive
+      - uploads_data:/app/uploads
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    entrypoint: [ "java", "-jar", "/app/app.jar" ]
+
+  frontend:
+    image: nginx:alpine
+    container_name: frontend-erudio
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/frontend:/usr/share/nginx/html
+    restart: always
+
+# ESSA PARTE É ESSENCIAL
+volumes:
+  uploads_data:

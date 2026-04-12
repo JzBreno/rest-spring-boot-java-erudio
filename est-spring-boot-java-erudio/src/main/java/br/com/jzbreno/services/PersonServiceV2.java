@@ -43,7 +43,7 @@ public class PersonServiceV2 {
     }
 
     public EntityModel<PersonDTO2> findByIdV2(String id){
-        log.info("Finding person by id : " + id);
+        log.info("Finding person by id[alterado na versao 1.1.0 - Teste Final automacao 3.0] : " + id);
         PersonDTO2 personDTO2 = personMapper.parsePersonDTOV2(personRepository.findById(Long.parseLong(id)).orElseThrow(() -> new ResourceNotFoundException("PersonDTO not found for this id :: " + id)));
         implementsHateoasPerson(personDTO2);
         //adicionando HAL

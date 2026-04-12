@@ -25,7 +25,7 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
     private String address;

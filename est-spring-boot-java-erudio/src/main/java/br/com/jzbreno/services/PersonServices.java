@@ -194,7 +194,6 @@ public class PersonServices {
     public void deleteById(String id){
         log.info("Deleting person : " + id);
         personRepository.deleteById(Long.parseLong(id));
-        implementsHateoasPerson(findById(id));
     }
 
 

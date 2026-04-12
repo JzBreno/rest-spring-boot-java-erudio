@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.controllers.docs.FileControllerDocsV2;
 import br.com.jzbreno.model.DTO.UploadFileResponseDTO;
 import br.com.jzbreno.services.FileStorageService;
 import br.com.jzbreno.services.FileStorageServiceV2;

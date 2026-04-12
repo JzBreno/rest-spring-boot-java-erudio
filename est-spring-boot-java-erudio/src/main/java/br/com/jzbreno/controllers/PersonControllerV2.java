@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.controllers.docs.PersonControllerV2Doc;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;

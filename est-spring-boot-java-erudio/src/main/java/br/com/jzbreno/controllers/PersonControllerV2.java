@@ -1,6 +1,8 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.controllers.docs.PersonControllerV2Doc;
+import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,11 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -75,6 +82,38 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
     public ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person) {
         return ResponseEntity.ok(personServices.createV2(person));
     }
+
+    @PostMapping(value = "/massCreate",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public List<PersonDTO2> massiveCreatre(MultipartFile file) {
+        log.info("Request received for massive creation. Filename: [{}], Content-Type: [{}], Size: [{} bytes]",
+                file.getOriginalFilename(), file.getContentType(), file.getSize());
+
+        if (file.isEmpty()) {
+            log.warn("Massive creation failed: The uploaded file is empty.");
+            throw new RequiredObjectIsNullException("File cannot be Empty");
+        }
+
+        long startTime = System.currentTimeMillis();
+        List<PersonDTO2> people = personServices.massiveCreation(file);
+        long duration = System.currentTimeMillis() - startTime;
+
+        if (people.isEmpty()) {
+            log.info("Massive creation completed, but no records were processed from file [{}]. Duration: {}ms",
+                    file.getOriginalFilename(), duration);
+            return (List<PersonDTO2>) ResponseEntity.noContent().build().getBody();
+        }
+
+        log.info("Massive creation successful. Processed {} records from file [{}] in {}ms",
+                people.size(), file.getOriginalFilename(), duration);
+
+        return ResponseEntity.ok(people).getBody();
+    }
+
 
     @PutMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE},

@@ -148,7 +148,6 @@ public class PersonServiceV2 {
             List<Person> listImported = rawDtos.stream()
                     .map(dto -> {
                         var entity = personRepository.save(ObjectMapper.parseObject(dto, Person.class));
-                        // Trace is used for high-volume logs to avoid cluttering standard info logs
                         log.trace("Person entity saved with ID: {}", entity.getId());
                         return entity;
                     })

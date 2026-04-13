@@ -36,6 +36,7 @@ public interface PersonControllerV2Doc {
             @RequestParam(name = "size", defaultValue = "15") Integer size,
             @RequestParam(name = "direction", defaultValue = "asc") String direction,
             @RequestParam(name = "sort", defaultValue = "firstName") String properties,
+            @RequestParam(name = "jasper", defaultValue = "no") String jasper,
             HttpServletRequest request) throws Exception;
 
     @Operation(summary = "Find persons by name", tags = {"People"})

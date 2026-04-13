@@ -21,7 +21,7 @@ import java.util.Map;
 public class XlsxJasperExporter implements FileExporter {
     @Override
     public boolean canHandle(String name) {
-        return name.equalsIgnoreCase("");
+        return name.equalsIgnoreCase(".jasper");
     }
 
     @Override

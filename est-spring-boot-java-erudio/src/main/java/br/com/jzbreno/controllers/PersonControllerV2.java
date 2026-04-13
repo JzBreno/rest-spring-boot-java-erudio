@@ -67,7 +67,7 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
                     MediaTypes.TEXT_CSV_VALUE,
                     MediaTypes.APPLICATION_PDF_VALUE})
     @Override
-    public ResponseEntity<Resource> generateExportPage(Integer page, Integer size, String direction, String properties, HttpServletRequest request) throws Exception {
+    public ResponseEntity<Resource> generateExportPage(Integer page, Integer size, String direction, String properties, String jasper, HttpServletRequest request) throws Exception {
 
         String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
         log.info("Received export request. Page: {}, Size: {}, Format: {}, Sort: {} ({})",

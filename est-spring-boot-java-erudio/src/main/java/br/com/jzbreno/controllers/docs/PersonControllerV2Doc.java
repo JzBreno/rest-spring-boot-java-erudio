@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.io.Resource;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
@@ -27,6 +29,14 @@ public interface PersonControllerV2Doc {
             @RequestParam(name = "size", defaultValue = "15") Integer size,
             @RequestParam(name = "direction", defaultValue = "asc") String direction,
             @RequestParam(name = "sort", defaultValue = "firstName") String properties);
+
+    @Operation(summary = "Find a list of All Person", tags = {"People"})
+    ResponseEntity<Resource> generateExportPage(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "15") Integer size,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "sort", defaultValue = "firstName") String properties,
+            HttpServletRequest request) throws Exception;
 
     @Operation(summary = "Find persons by name", tags = {"People"})
     ResponseEntity<PagedModel<EntityModel<PersonDTO2>>> findPersonByName(

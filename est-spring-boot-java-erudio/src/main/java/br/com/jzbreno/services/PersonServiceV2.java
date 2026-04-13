@@ -3,11 +3,14 @@ package br.com.jzbreno.services;
 import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.Exceptions.ResourceNotFoundException;
 import br.com.jzbreno.controllers.PersonControllerV2;
+import br.com.jzbreno.file.exporter.contract.FileExporter;
+import br.com.jzbreno.file.exporter.factory.FileExporterFactory;
 import br.com.jzbreno.file.importer.contract.FileImporter;
 import br.com.jzbreno.file.importer.factory.FileImporterFactory;
 import br.com.jzbreno.mapper.ObjectMapper;
 import br.com.jzbreno.mapper.PersonMapper;
 import br.com.jzbreno.model.DTO.PersonDTO;
+import org.springframework.core.io.Resource;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.model.Person;
 import br.com.jzbreno.repository.PersonRepository;
@@ -48,6 +51,9 @@ public class PersonServiceV2 {
 
     @Autowired
     FileImporterFactory importer;
+
+    @Autowired
+    FileExporterFactory exporter;
 
     public PersonServiceV2(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -168,6 +174,36 @@ public class PersonServiceV2 {
             log.error("Critical failure during massive processing of file [{}]. Reason: {}",
                     file.getOriginalFilename(), e.getMessage(), e);
             throw new RuntimeException("Error processing massive creation", e);
+        }
+    }
+
+    public Resource generateExportPage(Pageable pageable, String header) throws Exception {
+
+        log.info("Starting file export process. Page: {}, Size: {}, Header: '{}'",
+                pageable.getPageNumber(), pageable.getPageSize(), header);
+
+        long startTime = System.currentTimeMillis();
+
+        try {
+            List<PersonDTO> personList = personRepository.findAll(pageable)
+                    .stream()
+                    .map(dto -> ObjectMapper.parseObject(dto, PersonDTO.class))
+                    .toList();
+
+            log.debug("Successfully retrieved and mapped {} records from database", personList.size());
+
+            FileExporter fileExporter = this.exporter.getFileExporter(header);
+            Resource resource = fileExporter.exportFile(personList);
+
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("Export completed successfully in {} ms. Resource: {}", duration, resource.getFilename());
+
+            return resource;
+
+        } catch (Exception e) {
+            log.error("Failed to generate export file for header '{}' at page {}. Error: {}",
+                    header, pageable.getPageNumber(), e.getMessage(), e);
+            throw e;
         }
     }
 

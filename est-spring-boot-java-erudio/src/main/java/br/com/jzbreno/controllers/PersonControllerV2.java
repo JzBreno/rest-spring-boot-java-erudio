@@ -2,16 +2,20 @@ package br.com.jzbreno.controllers;
 
 import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
 import br.com.jzbreno.controllers.docs.PersonControllerV2Doc;
+import br.com.jzbreno.file.exporter.MediaTypes;
 import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +60,49 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
 
         return people.getContent().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(people);
     }
+
+    @GetMapping(value = "/generateExportPage",
+            produces = {
+                    MediaTypes.APPLICATION_XLSX_VALUE,
+                    MediaTypes.TEXT_CSV_VALUE,
+                    MediaTypes.APPLICATION_PDF_VALUE})
+    @Override
+    public ResponseEntity<Resource> generateExportPage(Integer page, Integer size, String direction, String properties, HttpServletRequest request) throws Exception {
+
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        log.info("Received export request. Page: {}, Size: {}, Format: {}, Sort: {} ({})",
+                page, size, acceptHeader, properties, direction);
+
+        Sort.Direction sortDirection = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+
+        try {
+            Resource resource = personServices.generateExportPage(pageable, acceptHeader);
+
+            var contentType = (acceptHeader != null && !acceptHeader.contains("*/*")) ? acceptHeader : MediaTypes.APPLICATION_XLSX_VALUE;
+            String fileExtension;
+
+            if (contentType.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)) {
+                fileExtension = ".xlsx";
+            } else {
+                fileExtension = MediaTypes.APPLICATION_PDF_VALUE.equalsIgnoreCase(contentType) ? ".pdf" : ".csv";
+            }
+
+            var fileName = "people_exported_" + System.currentTimeMillis() + fileExtension;
+
+            log.info("Export file '{}' generated successfully. Content-Type: {}", fileName, contentType);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error during file export for format {}: {}", acceptHeader, e.getMessage());
+            throw e;
+        }
+    }
+
 
     @GetMapping(value = "/findbyname/{firstName}", // Corrigido erro de digitação: firtName -> firstName
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})

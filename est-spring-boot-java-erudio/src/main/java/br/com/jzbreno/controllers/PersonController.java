@@ -34,7 +34,7 @@ import javax.swing.table.TableCellEditor;
 import java.util.*;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/person/v1")
 @Tag(name = "API REST Person", description = "Enpoint for managing Persons, version 1")
 public class PersonController{
 
@@ -43,15 +43,13 @@ public class PersonController{
 //    assim seria a forma de injecao com anotacao, mas irei usar no construtor como boa pratica
 
     private final PersonServices personServices;
-    private final DefaultLifecycleProcessor defaultLifecycleProcessor;
 
-    public PersonController(PersonServices personServices, PersonMapper personMapper, DefaultLifecycleProcessor defaultLifecycleProcessor) {
+    public PersonController(PersonServices personServices, DefaultLifecycleProcessor defaultLifecycleProcessor) {
         this.personServices = personServices;
-        this.defaultLifecycleProcessor = defaultLifecycleProcessor;
     }
 
     //adicionado informacoes no request
-    @GetMapping(value = "/v1/{id}",
+    @GetMapping(value = "/{id}",
         produces = MediaType.APPLICATION_JSON_VALUE)
     //adicionando as anotations do Swagger para melhorar nossa documentacao da API
     @Operation(
@@ -101,7 +99,7 @@ public class PersonController{
     }
 
     //adicionado informacoes no request
-    @GetMapping(value = "/v1/findAll",
+    @GetMapping(value = "/findAll",
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Find a list of All Person in Database",
@@ -141,7 +139,7 @@ public class PersonController{
     }
 
     //adicionado informacoes no request
-    @PostMapping(value = "/v1/massCreate",
+    @PostMapping(value = "/massCreate",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
@@ -189,7 +187,7 @@ public class PersonController{
         return ResponseEntity.ok(people).getBody();
     }
 
-    @GetMapping(value = "/v1/generateExportPage",
+    @GetMapping(value = "/generateExportPage",
             produces = {
                         MediaTypes.APPLICATION_XLSX_VALUE,
                         MediaTypes.TEXT_CSV_VALUE,
@@ -246,7 +244,7 @@ public class PersonController{
 
 
     //adicionado informacoes no request
-    @GetMapping(value = "/v1/findByName/{name}",
+    @GetMapping(value = "/findByName/{name}",
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Find a list of All Person in Database",
@@ -285,7 +283,7 @@ public class PersonController{
         return ResponseEntity.ok().body(people);
     }
 
-    @PostMapping(value = "/v1",
+    @PostMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
@@ -405,7 +403,7 @@ public class PersonController{
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = "/v1/{id}",
+    @PatchMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE})

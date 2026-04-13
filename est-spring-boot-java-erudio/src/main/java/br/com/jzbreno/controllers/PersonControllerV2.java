@@ -1,17 +1,29 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.Exceptions.RequiredObjectIsNullException;
+import br.com.jzbreno.controllers.docs.PersonControllerV2Doc;
+import br.com.jzbreno.file.exporter.MediaTypes;
+import br.com.jzbreno.model.DTO.PersonDTO;
 import br.com.jzbreno.model.DTO.PersonDTO2;
 import br.com.jzbreno.services.PersonServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -49,6 +61,49 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
         return people.getContent().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(people);
     }
 
+    @GetMapping(value = "/generateExportPage",
+            produces = {
+                    MediaTypes.APPLICATION_XLSX_VALUE,
+                    MediaTypes.TEXT_CSV_VALUE,
+                    MediaTypes.APPLICATION_PDF_VALUE})
+    @Override
+    public ResponseEntity<Resource> generateExportPage(Integer page, Integer size, String direction, String properties, String jasper, HttpServletRequest request) throws Exception {
+
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        log.info("Received export request. Page: {}, Size: {}, Format: {}, Sort: {} ({})",
+                page, size, acceptHeader, properties, direction);
+
+        Sort.Direction sortDirection = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, properties));
+
+        try {
+            Resource resource = personServices.generateExportPage(pageable, acceptHeader);
+
+            var contentType = (acceptHeader != null && !acceptHeader.contains("*/*")) ? acceptHeader : MediaTypes.APPLICATION_XLSX_VALUE;
+            String fileExtension;
+
+            if (contentType.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)) {
+                fileExtension = ".xlsx";
+            } else {
+                fileExtension = MediaTypes.APPLICATION_PDF_VALUE.equalsIgnoreCase(contentType) ? ".pdf" : ".csv";
+            }
+
+            var fileName = "people_exported_" + System.currentTimeMillis() + fileExtension;
+
+            log.info("Export file '{}' generated successfully. Content-Type: {}", fileName, contentType);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error during file export for format {}: {}", acceptHeader, e.getMessage());
+            throw e;
+        }
+    }
+
+
     @GetMapping(value = "/findbyname/{firstName}", // Corrigido erro de digitação: firtName -> firstName
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})
     @Override
@@ -74,6 +129,38 @@ public class PersonControllerV2 implements PersonControllerV2Doc {
     public ResponseEntity<EntityModel<PersonDTO2>> createV2(@RequestBody PersonDTO2 person) {
         return ResponseEntity.ok(personServices.createV2(person));
     }
+
+    @PostMapping(value = "/massCreate",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public List<PersonDTO2> massiveCreatre(MultipartFile file) {
+        log.info("Request received for massive creation. Filename: [{}], Content-Type: [{}], Size: [{} bytes]",
+                file.getOriginalFilename(), file.getContentType(), file.getSize());
+
+        if (file.isEmpty()) {
+            log.warn("Massive creation failed: The uploaded file is empty.");
+            throw new RequiredObjectIsNullException("File cannot be Empty");
+        }
+
+        long startTime = System.currentTimeMillis();
+        List<PersonDTO2> people = personServices.massiveCreation(file);
+        long duration = System.currentTimeMillis() - startTime;
+
+        if (people.isEmpty()) {
+            log.info("Massive creation completed, but no records were processed from file [{}]. Duration: {}ms",
+                    file.getOriginalFilename(), duration);
+            return (List<PersonDTO2>) ResponseEntity.noContent().build().getBody();
+        }
+
+        log.info("Massive creation successful. Processed {} records from file [{}] in {}ms",
+                people.size(), file.getOriginalFilename(), duration);
+
+        return ResponseEntity.ok(people).getBody();
+    }
+
 
     @PutMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE},

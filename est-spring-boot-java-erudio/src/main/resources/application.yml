@@ -1,22 +1,22 @@
 spring:
   application:
-    name: ${APP_NAME}
+    name: est-spring-boot-java-erudio
 
   cors:
-    originPatterns: ${CORS_ORIGINS}
+    originPatterns: "http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000"
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: admin
 
   jpa:
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO}
+      ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-    show-sql: ${SHOW_SQL}
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
 
   servlet:
     multipart:
@@ -30,16 +30,16 @@ spring:
     clean-disabled: false
     clean-before-validation: true
 
-# CONFIGURAÇÕES DE ARQUIVOS EXTERNOS
+# CONFIGURAÇÕES DE ARQUIVOS EXTERNOS (CAMINHOS REAIS WINDOWS)
 file:
-  upload-dir: ${UPLOAD_PATH_BASE}
-  upload-dir-txt: ${UPLOAD_PATH_TXT}
-  upload-dir-pdf: ${UPLOAD_PATH_PDF}
-  upload-dir-video: ${UPLOAD_PATH_VIDEO}
-  upload-dir-song: ${UPLOAD_PATH_SONG}
-  upload-dir-Other: ${UPLOAD_PATH_OTHER}
+  upload-dir: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload"
+  upload-dir-txt: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/txt"
+  upload-dir-pdf: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/pdf"
+  upload-dir-video: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/video"
+  upload-dir-song: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/song"
+  upload-dir-other: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/other"
 
 logging:
   level:
-    root: ${LOG_LEVEL_ROOT:INFO}
-    br.com.jzbreno: ${LOG_LEVEL_APP:DEBUG}
+    root: INFO
+    br.com.jzbreno: DEBUG

@@ -1,4 +1,4 @@
-package br.com.jzbreno.controllers;
+package br.com.jzbreno.controllers.docs;
 
 import br.com.jzbreno.model.DTO.UploadFileResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;

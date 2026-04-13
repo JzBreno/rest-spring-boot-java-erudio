@@ -1,5 +1,6 @@
 package br.com.jzbreno.controllers;
 
+import br.com.jzbreno.controllers.docs.BookControllerDoc;
 import br.com.jzbreno.model.DTO.BookDTO;
 import br.com.jzbreno.services.BookServices;
 import io.swagger.v3.oas.annotations.tags.Tag;

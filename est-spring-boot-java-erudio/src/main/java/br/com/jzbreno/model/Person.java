@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -23,6 +24,10 @@ public class Person implements Serializable {
     private String lastName;
     @Column(name = "address", nullable = false, length = 80)
     private String address;
+    @Column(name = "wikipedia_profile_url", length = 255)
+    private String profileUrl;
+    @Column(name = "photo_url", length = 255)
+    private String photoUrl;
     @Column(name = "gender", nullable = false, length = 6)
     private String gender;
     @Column(name = "birthday")
@@ -30,5 +35,5 @@ public class Person implements Serializable {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-
+    private List<Book> books;
 }

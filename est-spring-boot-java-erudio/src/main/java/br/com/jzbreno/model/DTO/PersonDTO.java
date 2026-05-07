@@ -1,8 +1,10 @@
 package br.com.jzbreno.model.DTO;
 
+import br.com.jzbreno.model.Book;
 import br.com.jzbreno.serializer.GenderSerializer;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.Column;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -10,6 +12,7 @@ import org.springframework.hateoas.server.core.Relation;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 //podemos usar o @JsonPropertyOrder para definir a ordem dos atributos da classe no json
 @JsonPropertyOrder ({ "id", "first_name", "last_Name", "gender", "address", "enabled"})
@@ -38,8 +41,11 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     private String phoneNumber;
     //    adicionando validacoes com anotacoes
     private String email;
-    @JsonProperty("enabled")
     private Boolean enabled;
+    private String profileUrl;
+    private String photoUrl;
+    @JsonIgnore
+    private List<Book> books;
 
 }
 

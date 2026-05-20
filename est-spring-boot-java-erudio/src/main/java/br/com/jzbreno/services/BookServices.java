@@ -47,7 +47,7 @@ public class BookServices {
         bookUpdate.setAuthor(bookDTO.getAuthor());
         bookUpdate.setTitle(bookDTO.getTitle());
         bookUpdate.setPrice(bookDTO.getPrice());
-        bookUpdate.setLaunch_date(bookDTO.getLaunch_date());
+        bookUpdate.setLaunchDate(bookDTO.getLaunchDate());
         implementsHateoasBook(bookUpdate);
         bookRepository.save(bookMapper.parseBookDTOToBook(bookUpdate));
         return bookUpdate;

@@ -25,7 +25,7 @@ public class Person implements Serializable {
     @Column(name = "address", nullable = false, length = 80)
     private String address;
     @Column(name = "wikipedia_profile_url", length = 255)
-    private String profileUrl;
+    private String wikipediaUrl;
     @Column(name = "photo_url", length = 255)
     private String photoUrl;
     @Column(name = "gender", nullable = false, length = 6)

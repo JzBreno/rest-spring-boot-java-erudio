@@ -1,0 +1,26 @@
+<section class="panel">
+  <header class="page-header">
+    <h2>Files {{ version }}</h2>
+    <p>Base: <code>{{ basePath }}</code></p>
+  </header>
+  <div class="card">
+    <app-panel-tabs [tabs]="tabs" [activeId]="activeTab" (tabChange)="onTab($event)" />
+    @switch (activeTab) {
+      @case ('upload') {
+        <input type="file" (change)="onSingle($event)" />
+        <button type="button" class="btn-primary" style="margin-top:0.75rem" (click)="upload()" [disabled]="loading">POST /uploadFile</button>
+      }
+      @case ('uploads') {
+        <input type="file" multiple (change)="onMulti($event)" />
+        <button type="button" class="btn-primary" style="margin-top:0.75rem" (click)="uploadMany()" [disabled]="loading">POST /uploadFiles</button>
+      }
+      @case ('download') {
+        <form class="inline-form" [formGroup]="downloadForm" (ngSubmit)="download()">
+          <label>Nome do arquivo <input formControlName="fileName" /></label>
+          <button type="submit" class="btn-primary" [disabled]="loading">GET /downloadfile/:fileName</button>
+        </form>
+      }
+    }
+    <app-response-box [loading]="loading" [error]="error" [success]="success" [data]="data" />
+  </div>
+</section>

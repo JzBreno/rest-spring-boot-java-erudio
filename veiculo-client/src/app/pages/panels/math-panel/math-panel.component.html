@@ -1,0 +1,19 @@
+<section class="panel">
+  <header class="page-header"><h2>Math</h2><p>Base: <code>/math</code></p></header>
+  <div class="card">
+    <app-panel-tabs [tabs]="tabs" [activeId]="activeTab" (tabChange)="onTab($event)" />
+    @if (activeTab === 'square') {
+      <form class="inline-form" [formGroup]="oneForm" (ngSubmit)="calc()">
+        <label>param1 <input formControlName="a" /></label>
+        <button type="submit" class="btn-primary" [disabled]="loading">GET /square/:param1</button>
+      </form>
+    } @else {
+      <form class="inline-form" [formGroup]="twoForm" (ngSubmit)="calc()">
+        <label>param1 <input formControlName="a" /></label>
+        <label>param2 <input formControlName="b" /></label>
+        <button type="submit" class="btn-primary" [disabled]="loading">Executar</button>
+      </form>
+    }
+    <app-response-box [loading]="loading" [error]="error" [data]="data" />
+  </div>
+</section>

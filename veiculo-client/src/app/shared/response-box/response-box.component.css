@@ -1,0 +1,10 @@
+.response-pre {
+  margin: 0.75rem 0 0;
+  padding: 1rem;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  overflow: auto;
+  max-height: 420px;
+}

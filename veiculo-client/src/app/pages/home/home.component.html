@@ -1,0 +1,20 @@
+<section class="home">
+  <header class="page-header">
+    <h2>Painel principal</h2>
+    <p>
+      Cliente Angular para o monolito Spring Boot. Selecione um controller na barra de abas
+      ou escolha um card abaixo para testar os endpoints.
+    </p>
+  </header>
+
+  <div class="controller-grid">
+    @for (ctrl of controllers; track ctrl.id) {
+      <a [routerLink]="['/api', ctrl.id]" class="controller-card">
+        <h3>{{ ctrl.label }}</h3>
+        <p>{{ ctrl.description }}</p>
+        <code>{{ ctrl.basePath }}</code>
+        <span class="badge">{{ ctrl.endpointCount }} endpoints</span>
+      </a>
+    }
+  </div>
+</section>

@@ -1,0 +1,73 @@
+.panel-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.panel-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.panel-tab:hover {
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.panel-tab.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.panel-tab.active .method {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.panel-tab .method {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.2rem;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.panel-tab .method[data-method='GET'] {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.panel-tab .method[data-method='POST'] {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.panel-tab .method[data-method='PUT'] {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.panel-tab .method[data-method='PATCH'] {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.panel-tab .method[data-method='DELETE'] {
+  background: #fee2e2;
+  color: #991b1b;
+}

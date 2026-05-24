@@ -1,0 +1,59 @@
+.home {
+  max-width: 100%;
+}
+
+.controller-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.controller-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.controller-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  transform: translateY(-2px);
+}
+
+.controller-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.controller-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  flex: 1;
+}
+
+.controller-card code {
+  font-size: 0.75rem;
+  color: #475569;
+  background: #f8fafc;
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.controller-card .badge {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 999px;
+}

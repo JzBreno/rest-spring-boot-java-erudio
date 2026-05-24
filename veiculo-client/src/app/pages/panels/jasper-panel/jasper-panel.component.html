@@ -1,0 +1,19 @@
+<section class="panel">
+  <header class="page-header">
+    <h2>Jasper Reports</h2>
+    <p>Base: <code>/person/v2/reports/jasper</code></p>
+  </header>
+  <div class="card">
+    <app-panel-tabs [tabs]="tabs" [activeId]="activeTab" (tabChange)="onTab($event)" />
+    <form class="form-grid page-params" [formGroup]="pageForm" (ngSubmit)="exportar()">
+      <label>Página <input type="number" formControlName="page" /></label>
+      <label>Tamanho <input type="number" formControlName="size" /></label>
+      <label>Direção <input formControlName="direction" /></label>
+      <label>Sort <input formControlName="sort" /></label>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        GET /people/{{ activeTab }}
+      </button>
+    </form>
+    <app-response-box [loading]="loading" [error]="error" [success]="success" />
+  </div>
+</section>

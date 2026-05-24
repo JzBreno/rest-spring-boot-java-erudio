@@ -1,0 +1,27 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-brand">
+      <span class="logo">⚡</span>
+      <div>
+        <h1>REST Spring Boot</h1>
+        <p>Client Angular · Monolito Erudio</p>
+      </div>
+    </div>
+    <code class="api-base">http://localhost:8080</code>
+  </header>
+
+  <nav class="controller-tabs" role="tablist">
+    <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="tab">
+      Início
+    </a>
+    @for (ctrl of controllers; track ctrl.id) {
+      <a [routerLink]="['/api', ctrl.id]" routerLinkActive="active" class="tab">
+        {{ ctrl.label }}
+      </a>
+    }
+  </nav>
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>

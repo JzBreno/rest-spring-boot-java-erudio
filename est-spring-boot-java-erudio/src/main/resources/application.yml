@@ -3,7 +3,7 @@ spring:
     name: est-spring-boot-java-erudio
 
   cors:
-    originPatterns: "http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000"
+    originPatterns: "http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000,http://localhost:4200"
 
   datasource:
     url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true

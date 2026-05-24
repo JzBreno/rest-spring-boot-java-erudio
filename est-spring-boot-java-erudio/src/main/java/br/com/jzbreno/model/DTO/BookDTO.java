@@ -20,7 +20,7 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
     @JsonProperty("author")
     private String author;
     @JsonProperty("lauch_date")
-    private String launch_date;
+    private String launchDate;
     @JsonProperty("price")
     private String price;
 }

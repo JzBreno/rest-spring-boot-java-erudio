@@ -18,8 +18,8 @@ public class BookMapper {
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setTitle(book.getTitle());
 
-        if (book.getLaunch_date() != null) {
-            bookDTO.setLaunch_date(String.valueOf(book.getLaunch_date()));
+        if (book.getLaunchDate() != null) {
+            bookDTO.setLaunchDate(String.valueOf(book.getLaunchDate()));
         }
 
         bookDTO.setPrice(String.valueOf(book.getPrice()));
@@ -31,8 +31,8 @@ public class BookMapper {
         book.setId(bookDTO.getId());
         book.setAuthor(bookDTO.getAuthor());
         book.setTitle(bookDTO.getTitle());
-        if (bookDTO.getLaunch_date() != null) {
-            book.setLaunch_date(LocalDate.parse(bookDTO.getLaunch_date(), FORMATTER));
+        if (bookDTO.getLaunchDate() != null) {
+            book.setLaunchDate(LocalDate.parse(bookDTO.getLaunchDate(), FORMATTER));
         }
         book.setPrice(Double.parseDouble(bookDTO.getPrice()));
         return book;
@@ -45,8 +45,8 @@ public class BookMapper {
             newBook.setAuthor(book.getAuthor());
             newBook.setTitle(book.getTitle());
             newBook.setPrice(Double.parseDouble(book.getPrice()));
-            if (book.getLaunch_date() != null) {
-                newBook.setLaunch_date(LocalDate.parse(book.getLaunch_date(), FORMATTER));
+            if (book.getLaunchDate() != null) {
+                newBook.setLaunchDate(LocalDate.parse(book.getLaunchDate(), FORMATTER));
             }
             return newBook;
         }).toList();
@@ -60,8 +60,8 @@ public class BookMapper {
             bookDTO.setId(book.getId());
             bookDTO.setAuthor(book.getAuthor());
             bookDTO.setTitle(book.getTitle());
-            if (book.getLaunch_date() != null) {
-                bookDTO.setLaunch_date(String.valueOf(book.getLaunch_date()));
+            if (book.getLaunchDate() != null) {
+                bookDTO.setLaunchDate(String.valueOf(book.getLaunchDate()));
             }
             bookDTO.setPrice(String.valueOf(book.getPrice()));
             return bookDTO;

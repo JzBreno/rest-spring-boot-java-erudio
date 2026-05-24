@@ -1,0 +1,7 @@
+<section class="panel">
+  <header class="page-header"><h2>Test Log</h2><p>Base: <code>/log/test</code></p></header>
+  <div class="card">
+    <button type="button" class="btn-primary" (click)="test()" [disabled]="loading">GET /log/test</button>
+    <app-response-box [loading]="loading" [error]="error" [data]="data" />
+  </div>
+</section>

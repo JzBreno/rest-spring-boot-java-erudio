@@ -1,0 +1,38 @@
+<section class="panel">
+  <header class="page-header"><h2>Book</h2><p>Base: <code>/book</code></p>  </header>
+  <div class="card">
+    <app-panel-tabs [tabs]="tabs" [activeId]="activeTab" (tabChange)="onTab($event)" />
+    @if (activeTab === 'listar') {
+      <button type="button" class="btn-primary" (click)="listar()" [disabled]="loading">GET /findAll</button>
+    }
+    @if (activeTab === 'buscar') {
+      <form class="inline-form" [formGroup]="idForm" (ngSubmit)="buscar()">
+        <label>ID <input type="number" formControlName="id" /></label>
+        <button type="submit" class="btn-primary">GET /:id</button>
+      </form>
+    }
+    @if (activeTab === 'criar' || activeTab === 'save' || activeTab === 'atualizar') {
+      @if (activeTab === 'atualizar') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="carregar()" style="margin-bottom:1rem">
+          <label>ID <input type="number" formControlName="id" /></label>
+          <button type="submit" class="btn-secondary">Carregar</button>
+        </form>
+      }
+      <form class="form-grid" [formGroup]="bookForm" (ngSubmit)="activeTab === 'criar' ? criar() : activeTab === 'save' ? save() : atualizar()">
+        <label>ID <input type="number" formControlName="id" /></label>
+        <label>Título <input formControlName="title" /></label>
+        <label>Autor <input formControlName="author" /></label>
+        <label>Data (lauch_date) <input formControlName="lauch_date" placeholder="yyyy-MM-dd" /></label>
+        <label>Preço <input formControlName="price" /></label>
+        <button type="submit" class="btn-primary" [disabled]="loading">Executar</button>
+      </form>
+    }
+    @if (activeTab === 'excluir') {
+      <form class="inline-form" [formGroup]="idForm" (ngSubmit)="excluir()">
+        <label>ID <input type="number" formControlName="id" /></label>
+        <button type="submit" class="btn-danger">DELETE /:id</button>
+      </form>
+    }
+    <app-response-box [loading]="loading" [error]="error" [success]="success" [data]="data" />
+  </div>
+</section>

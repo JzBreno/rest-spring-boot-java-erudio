@@ -1,0 +1,10 @@
+<section class="panel">
+  <header class="page-header"><h2>Greeting</h2><p>Base: <code>/greeting</code></p></header>
+  <div class="card">
+    <form class="inline-form" [formGroup]="form" (ngSubmit)="greet()">
+      <label>name <input formControlName="name" placeholder="Breno" /></label>
+      <button type="submit" class="btn-primary" [disabled]="loading">GET /greeting</button>
+    </form>
+    <app-response-box [loading]="loading" [error]="error" [data]="data" />
+  </div>
+</section>

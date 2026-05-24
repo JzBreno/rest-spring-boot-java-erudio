@@ -23,7 +23,7 @@ public class Book implements Serializable {
     @Column(name = "title", nullable = false, length = 10)
     private String title;
     @Column(name = "launch_date", nullable = false)
-    private LocalDate launch_date;
+    private LocalDate launchDate;
     @Column(name = "price")
     private double price;
 

@@ -1,0 +1,52 @@
+<section class="panel">
+  <header class="page-header">
+    <h2>Veículo</h2>
+    <p>Base: <code>/veiculo</code></p>
+  </header>
+  <div class="card">
+    <app-panel-tabs [tabs]="tabs" [activeId]="activeTab" (tabChange)="onTab($event)" />
+    @switch (activeTab) {
+      @case ('listar') {
+        <button type="button" class="btn-primary" (click)="listar()" [disabled]="loading">Executar GET /findAll</button>
+      }
+      @case ('buscar') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="buscar()">
+          <label>ID <input type="number" formControlName="id" /></label>
+          <button type="submit" class="btn-primary" [disabled]="loading">GET /:id</button>
+        </form>
+      }
+      @case ('criar') {
+        <form class="form-grid" [formGroup]="createForm" (ngSubmit)="criar()">
+          <label>Placa <input formControlName="placa" /></label>
+          <label>Marca <input formControlName="marca" /></label>
+          <label>Modelo <input formControlName="modelo" /></label>
+          <label>Ano <input formControlName="ano" maxlength="4" /></label>
+          <label>Cor <input formControlName="cor" /></label>
+          <button type="submit" class="btn-primary" [disabled]="loading">POST /create</button>
+        </form>
+      }
+      @case ('atualizar') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="carregarEdicao()">
+          <label>ID <input type="number" formControlName="id" /></label>
+          <button type="submit" class="btn-secondary" [disabled]="loading">Carregar</button>
+        </form>
+        <form class="form-grid" style="margin-top:1rem" [formGroup]="veiculoForm" (ngSubmit)="atualizar()">
+          <label>ID <input type="number" formControlName="id" readonly /></label>
+          <label>Placa <input formControlName="placa" /></label>
+          <label>Marca <input formControlName="marca" /></label>
+          <label>Modelo <input formControlName="modelo" /></label>
+          <label>Ano <input formControlName="ano" /></label>
+          <label>Cor <input formControlName="cor" /></label>
+          <button type="submit" class="btn-primary" [disabled]="loading">PUT /update</button>
+        </form>
+      }
+      @case ('excluir') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="excluir()">
+          <label>ID <input type="number" formControlName="id" /></label>
+          <button type="submit" class="btn-danger" [disabled]="loading">DELETE /:id</button>
+        </form>
+      }
+    }
+    <app-response-box [loading]="loading" [error]="error" [success]="success" [data]="data" />
+  </div>
+</section>

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PersonDTO2 extends RepresentationModel<PersonDTO2> implements Serializable  {
@@ -24,6 +25,9 @@ public class PersonDTO2 extends RepresentationModel<PersonDTO2> implements Seria
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
     private Boolean enabled;
+    private String profileUrl;
+    private String photoUrl;
+    private List<String> books;
 
 
 }

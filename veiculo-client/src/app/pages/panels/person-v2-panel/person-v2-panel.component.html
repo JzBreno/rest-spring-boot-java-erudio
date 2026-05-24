@@ -1,0 +1,75 @@
+<section class="panel">
+  <header class="page-header"><h2>Person v2</h2><p>Base: <code>/person/v2</code></p></header>
+  <div class="card">
+    <app-panel-tabs [tabs]="tabs" [activeId]="activeTab" (tabChange)="onTab($event)" />
+    <form class="form-grid page-params" [formGroup]="pageForm">
+      <label>Página <input type="number" formControlName="page" /></label>
+      <label>Tamanho <input type="number" formControlName="size" /></label>
+      <label>Direção <input formControlName="direction" /></label>
+      <label>Sort <input formControlName="sort" /></label>
+    </form>
+    @switch (activeTab) {
+      @case ('listar') { <button type="button" class="btn-primary" (click)="listar()" [disabled]="loading">GET /findAll</button> }
+      @case ('buscar') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="buscar()">
+          <label>ID <input formControlName="id" /></label>
+          <button type="submit" class="btn-primary">GET /:id</button>
+        </form>
+      }
+      @case ('nome') {
+        <form class="inline-form" [formGroup]="nameForm" (ngSubmit)="porNome()">
+          <label>firstName <input formControlName="name" /></label>
+          <button type="submit" class="btn-primary">GET /findbyname/:firstName</button>
+        </form>
+      }
+      @case ('criar') {
+        <form class="form-grid" [formGroup]="personForm" (ngSubmit)="criar()">
+          <label>firstName <input formControlName="firstName" /></label>
+          <label>lastName <input formControlName="lastName" /></label>
+          <label>birthday <input formControlName="birthday" /></label>
+          <label>address <input formControlName="address" /></label>
+          <label>gender <input formControlName="gender" /></label>
+          <button type="submit" class="btn-primary">POST</button>
+        </form>
+      }
+      @case ('atualizar') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="carregar()">
+          <label>ID <input formControlName="id" /></label>
+          <button type="submit" class="btn-secondary">Carregar</button>
+        </form>
+        <form class="form-grid" style="margin-top:1rem" [formGroup]="personForm" (ngSubmit)="atualizar()">
+          <label>id <input type="number" formControlName="id" /></label>
+          <label>firstName <input formControlName="firstName" /></label>
+          <label>lastName <input formControlName="lastName" /></label>
+          <label>birthday <input formControlName="birthday" /></label>
+          <label>address <input formControlName="address" /></label>
+          <label>gender <input formControlName="gender" /></label>
+          <button type="submit" class="btn-primary">PUT</button>
+        </form>
+      }
+      @case ('excluir') {
+        <form class="inline-form" [formGroup]="idForm" (ngSubmit)="excluir()">
+          <label>ID <input formControlName="id" /></label>
+          <button type="submit" class="btn-danger">DELETE</button>
+        </form>
+      }
+      @case ('mass') {
+        <input type="file" accept=".csv,.xlsx" (change)="onFile($event)" />
+        <button type="button" class="btn-primary" style="margin-top:0.75rem" (click)="massCreate()" [disabled]="loading">POST /massCreate</button>
+      }
+      @case ('export') {
+        <form class="form-grid" [formGroup]="exportForm" (ngSubmit)="exportar()">
+          <label>Accept
+            <select formControlName="accept">
+              <option value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">XLSX</option>
+              <option value="text/csv">CSV</option>
+              <option value="application/pdf">PDF</option>
+            </select>
+          </label>
+          <button type="submit" class="btn-primary" [disabled]="loading">GET /generateExportPage</button>
+        </form>
+      }
+    }
+    <app-response-box [loading]="loading" [error]="error" [success]="success" [data]="data" />
+  </div>
+</section>

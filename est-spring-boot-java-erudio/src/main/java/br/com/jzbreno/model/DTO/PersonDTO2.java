@@ -17,7 +17,7 @@ public class PersonDTO2 extends RepresentationModel<PersonDTO2> implements Seria
     @Serial
     private final static long serialVersionUID = 1L;
 
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
     private String address;

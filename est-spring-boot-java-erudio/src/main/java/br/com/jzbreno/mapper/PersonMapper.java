@@ -9,6 +9,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class PersonMapper {
 
@@ -21,7 +23,7 @@ public class PersonMapper {
         personDtoV2.setLastName(person.getLastName());
         personDtoV2.setGender(person.getGender());
         personDtoV2.setBirthday(person.getBirthday());
-        personDtoV2.setId(person.getId());
+        personDtoV2.setId(String.valueOf(Objects.hash(person.getId())));
         personDtoV2.setEnabled(person.getEnabled());
         personDtoV2.setAddress(person.getAddress());
 
@@ -56,7 +58,7 @@ public class PersonMapper {
             personDtoV2.setLastName(person.getLastName());
             personDtoV2.setBirthday(person.getBirthday());
             personDtoV2.setGender(person.getGender());
-            personDtoV2.setId(person.getId());
+            personDtoV2.setId(String.valueOf(Objects.hash(person.getId())));
             personDtoV2.setAddress(person.getAddress());
 
             if (person.getBirthday() != null) {

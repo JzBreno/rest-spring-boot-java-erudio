@@ -1,5 +1,14 @@
-cors:
-  originPatterns: http://localhost:8080,http://localhost:8081,http://localhost:3000
 spring:
   application:
-    name=est-spring-boot-java-erudio:
+    name: est-spring-boot-java-erudio
+  cors: # <-- Moveu para dentro de 'spring'
+    originPatterns: http://localhost:8080,http://localhost:8081,http://localhost:3000
+  datasource:
+    url: jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno_test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: admin
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none

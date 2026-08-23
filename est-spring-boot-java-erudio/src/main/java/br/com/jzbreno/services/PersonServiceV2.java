@@ -31,10 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -120,7 +117,7 @@ public class PersonServiceV2 {
 
         Person savedEntity = personRepository.save(entity);
 
-        personDTO.setId(savedEntity.getId());
+        personDTO.setId(String.valueOf(Objects.hash(savedEntity.getId())));
 
         implementsHateoasPerson(personDTO);
         List<Link> selfLink = generateHAL(personDTO);

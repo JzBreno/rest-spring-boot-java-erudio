@@ -28,9 +28,8 @@ spring:
   flyway:
     repair-on-migrate: true
     clean-disabled: false
-    clean-before-validation: true
+    clean-before-validation: false
 
-# CONFIGURAÇÕES DE ARQUIVOS EXTERNOS (CAMINHOS REAIS WINDOWS)
 file:
   upload-dir: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload"
   upload-dir-txt: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/txt"

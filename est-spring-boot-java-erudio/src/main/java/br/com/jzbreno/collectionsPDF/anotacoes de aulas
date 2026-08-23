@@ -1,0 +1,218 @@
+APP_NAME="est-spring-boot-java-erudio CORS_ORIGINS=http://localhost:8080,http://localhost:8081,http://localhost:8090,http://localhost:3000 DB_URL=jdbc:mysql://localhost:3306/rest_spring_boot_jzbreno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true DB_USERNAME=root DB_PASSWORD=admin JPA_DDL_AUTO=none SHOW_SQL=true UPLOAD_PATH_BASE=UPLOAD_PATH_BASE=C:/Users/joseb/OneDrive/Documentos/Desevolvimento/Projetos/Upload UPLOAD_PATH_TXT=/Users/joseb/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Txt UPLOAD_PATH_PDF=/Users/joseb/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Pdf UPLOAD_PATH_VIDEO=/Users/joseb/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Videos UPLOAD_PATH_SONG=/Users/joseb/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Song UPLOAD_PATH_OTHER=/Users/joseb/OneDrive/Documentos/Desevolvimento/Projetos/Upload/Other LOG_LEVEL_ROOT=INFO LOG_LEVEL_APP=DEBUG"
+
+
+
+
+gerar imagem docker do nosso projeto
+
+mvn clean package -DskipTests
+
+docker build -t nomedojar:versao-tag .
+
+docker images
+
+
+
+versão menor
+
+mensageria
+
+banco de dados -> sql, postgress
+
+hibernate ->
+
+
+anotações
+
+inserindo novas tabelas de juncao de person e books para exercitar hibernate e jpa
+iremos criar o relacionamento many to many com books
+inserindo uma coluna em person e uma em books para juntar elas
+
+mapeando nos models
+
+tipos de fecth, fetch é como configuraremos o carregamento das informações nas nossas consultas
+tipos de fetch -> lazy(perguiçoso) -> não carrega quando chama person, somente quando se chama o .get() do novo atributo -> Exige gerenciamento de Sessão/Transação
+fetch -> eager -> ele trará toda a inforcao imediatamente -> tomar cuidado, gera querys pesadas pode custar desempenho
+
+iremos inserir apenas em person
+
+    @ManyToMany(fetch = FetchType.EAGER) -> com essa propriedade ira trazer a lista de livros para cada pessoa
+    @JoinTable(name = "person_books",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
+
+
+
+jwt java web token(autenticação)
+
+criação de novas tabelas
+
+para implementar segunraca se deve cumprir alguns requisitos, uma estrutura
+
+
+
+
+users -> usuários cadastrados
+user_permission -> tabela intermediaria onde sera salvo a relação id user para id permissão
+permission -> tabela referencia para tipos de permissões, 1 -> admin 2 -> manager etc
+
+relação entre tabelas
+
+select u.name, u.passwaord, p.description from users u
+inner join user_permission up on up.id_user = u.id
+inner join permission p on p.id = up.permission_id;
+
+adicionando spring security no projeto
+
+	 <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.5.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+deveremos configurar nossas entidades de User e Permission
+
+
+package br.com.jzbreno.model;
+
+import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+@Entity
+@Table(name = "users")
+@Data
+public class User implements UserDetails,  Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, name = "user_name", nullable = false, length = 80)
+    private String username;
+    @Column(nullable = false,name = "password", length = 255)
+    private String password;
+    @Column(name = "full_name", length = 80)
+    private String fullName;
+    @Column(name = "account_non_expired", length = 80)
+    private String acountNonExpired;
+    @Column(name = "account_non_locked", length = 80)
+    private String accountNonLocked;
+    @Column(name = "credentials_non_expired", length = 80)
+    private String credentialsNonExpired;
+    @Column(name = "enabled", length = 80)
+    private String enabled;
+
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+}
+
+a interface userdertails fornece as informações básicas do usuário que o springsecurity precisa para realizar a autenticação, é uma classe diferente das entitys, ela é utilizada para representação que o spring security entende
+ métodos sobrescritos ao implementar
+	getUserName(), getPassword(), getAuthorities()
+a GrantedAuthority representa a permissão, concedido ao usuário. o security usa isso para autorizacao
+getAuthority(): Retorna uma String que representa a permissão (por exemplo, "ROLE_ADMIN", "ROLE_USER", ou "READ_PRIVILEGE").
+
+
+@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_permission",
+    joinColumns = @JoinColumn(name = "id_user"),
+    inverseJoinColumns = {@JoinColumn(name = "id_permission")})
+    private List<Permission> permissions;
+
+
+
+criando nosso repository com jpql onde poderemos utilizar querys adaptadas
+
+@Repository
+public interface UserPermissionRepository extends JpaRepository<User, Long> {
+
+    @Query("SELECT u FROM User u WHERE u.username = :userName")
+    User findByUsername(@Param("userName") String userName);
+
+}
+
+
+package br.com.jzbreno.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.io.Serializable;
+
+@Entity
+@Table(name = "permission")
+public class Permission implements GrantedAuthority, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "description", nullable = false, length = 80)
+    private String description;
+
+    @Override
+    public String getAuthority() {
+        return this.description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+}
+
+
+

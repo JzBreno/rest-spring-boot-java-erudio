@@ -17,11 +17,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
-#inserindo seguranca
-  security:
-    token:
-      secret-key: 53cr37
-      expire-length: 3600000
 
   servlet:
     multipart:
@@ -34,6 +29,12 @@ spring:
     repair-on-migrate: true
     clean-disabled: false
     clean-before-validation: false
+
+#inserindo seguranca
+security:
+  token:
+    secret-key: 53cr37
+    expire-length: 3600000
 
 file:
   upload-dir: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload"

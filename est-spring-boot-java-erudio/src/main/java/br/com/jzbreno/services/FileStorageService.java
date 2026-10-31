@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.MessageFormat;
 
 @Service
 public class FileStorageService {
@@ -35,7 +34,7 @@ public class FileStorageService {
             if (!Files.exists(path)) {
                 logger.info("Creting Directory {}", path.toAbsolutePath().toString());
                 Files.createDirectories(path);
-                logger.info(MessageFormat.format("Folder {} no criado", path.toAbsolutePath()));
+                logger.info("Folder {} criado", path.toAbsolutePath());
             }
         }catch (Exception e) {
             logger.error("Erro ao criar o arquivo {}", e.getMessage());

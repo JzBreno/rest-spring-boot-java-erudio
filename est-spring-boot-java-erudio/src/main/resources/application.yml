@@ -37,12 +37,12 @@ security:
     expire-length: 3600000
 
 file:
-  upload-dir: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload"
-  upload-dir-txt: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/txt"
-  upload-dir-pdf: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/pdf"
-  upload-dir-video: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/video"
-  upload-dir-song: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/song"
-  upload-dir-other: "C:/Users/joseb/OneDrive/Documents/Desenvolvimento/Projetos/Upload/other"
+  upload-dir: ${UPLOAD_DIR:${user.home}/Upload}
+  upload-dir-txt: ${UPLOAD_DIR:${user.home}/Upload}/txt
+  upload-dir-pdf: ${UPLOAD_DIR:${user.home}/Upload}/pdf
+  upload-dir-video: ${UPLOAD_DIR:${user.home}/Upload}/video
+  upload-dir-song: ${UPLOAD_DIR:${user.home}/Upload}/song
+  upload-dir-other: ${UPLOAD_DIR:${user.home}/Upload}/other
 
 logging:
   level:

@@ -72,9 +72,10 @@ public class SecurityConfig {
                         ,"/swagger-ui/**"
                         ,"/v3/api-docs/**"
                         ,"/auth/createUser").permitAll()
-                        .requestMatchers("/api/**").authenticated()// so pode permitir com autheticated
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("person/v2/*").authenticated()// so pode permitir com autheticated
                         .requestMatchers("/users").denyAll() // dependendo da forma que config jpa, pode mostrar as entidades como endpoints, assim podendo chamar user, sempre manter disable()
-
+                        .anyRequest().authenticated()//sem essa regra o spring nega tudo que nao tiver declarado acima
                 )
                 .cors(cors -> {})
                 .build();

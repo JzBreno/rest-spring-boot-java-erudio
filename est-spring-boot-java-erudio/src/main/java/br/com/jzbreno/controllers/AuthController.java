@@ -33,4 +33,18 @@ public class AuthController {
         return ResponseEntity.ok().body(token.getBody());
     }
 
+    @PostMapping("/refresh/{username}")
+    @Operation(summary = "refresh Authenticates an user and retornes a token")
+    public ResponseEntity<TokenDTO> refreshToken(@PathVariable("username") String username,
+                                                 @RequestHeader("Authorization") String refreshToken) {
+
+        if(username == null || refreshToken == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        TokenDTO newToken = authService.signIn(username, refreshToken).getBody();
+
+        if(newToken == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        return ResponseEntity.ok().body(newToken);
+    }
+
 }

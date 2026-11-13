@@ -5,6 +5,7 @@ import br.com.jzbreno.security.AccountCredentialsDTO;
 import br.com.jzbreno.security.JwtTokenProvider;
 import br.com.jzbreno.security.TokenDTO;
 import com.fasterxml.jackson.databind.deser.std.TokenBufferDeserializer;
+import org.antlr.v4.runtime.Token;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,4 +46,14 @@ public class AuthService {
     }
 
 
-}
+    public ResponseEntity<TokenDTO> signIn(String userName, String refreshToken) {
+        var user = repository.findByUsername(userName);
+        if(user.isEmpty()) throw new UsernameNotFoundException("User not found: " + userName);
+
+        var token = jwtTokenProvider.refreshToken(refreshToken);
+
+        return ResponseEntity.ok(token);
+
+    }
+
+    }

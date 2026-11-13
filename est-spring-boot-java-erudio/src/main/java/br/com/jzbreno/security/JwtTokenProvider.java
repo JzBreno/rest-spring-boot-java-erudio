@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,6 +49,26 @@ public class JwtTokenProvider {
         String accessToken = getAccessToken(username, roles, now, validaty);
         String refreshToken = getRefreshToken(username, roles,now);
         return new TokenDTO(username, true, now, validaty, accessToken, refreshToken);
+    }
+
+    public TokenDTO refreshToken(String refreshToken) {
+        var token = "";
+
+        if(refreshTokenContainsBearer(refreshToken)) {
+            token = refreshToken.substring("Bearer ".length());
+        }
+
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+
+        String username = decodedJWT.getSubject();
+        List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
+
+        return createToken(username, roles);
+    }
+
+    private static boolean refreshTokenContainsBearer(String refreshToken) {
+        return StringUtils.isNotBlank(refreshToken) && refreshToken.startsWith("Bearer ");
     }
 
     private String getAccessToken(String username,List<String> roles, Date now, Date validity) {
